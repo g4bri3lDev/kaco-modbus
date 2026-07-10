@@ -5,6 +5,11 @@ Model 103 at 40070 (len 50), end marker at 40122.
 Values mirror the real unit's display (3.28 kW, 8883 kWh).
 """
 
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
 
 def _string_regs(text: str, length: int) -> list[int]:
     data = text.encode("ascii").ljust(length * 2, b"\x00")
@@ -56,3 +61,9 @@ def _build() -> dict[int, int]:
 
 
 BLUEPLANET_86TL3_REGISTERS: dict[int, int] = _build()
+
+
+def registers_from_dump(path: str | Path) -> dict[int, int]:
+    """Load a register image captured by ``python -m kaco_modbus.dump --json``."""
+    data = json.loads(Path(path).read_text())
+    return {int(address): value for address, value in data["registers"].items()}
