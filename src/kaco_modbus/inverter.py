@@ -177,7 +177,4 @@ class Inverter(Component):
     @property
     def energy_total(self) -> float | None:
         """Lifetime AC energy in Wh (WH scaled by WH_SF)."""
-        raw = self._energy_raw
-        if raw is None:
-            return None
-        return float(raw * 10 ** (self._energy_sf or 0))
+        return _apply_sf(self._energy_raw, self._energy_sf)
