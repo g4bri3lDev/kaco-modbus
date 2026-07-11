@@ -1,0 +1,89 @@
+name: Release Please
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to publish to PyPI (e.g. v0.1.0). Leave empty to run release-please only."
+        required: false
+        type: string
+
+permissions: {}
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - uses: googleapis/release-please-action@v5
+        id: release
+        with:
+          release-type: python
+
+      # release-please bumps the version in pyproject.toml but does not refresh
+      # uv.lock (which records the project's own version). Left stale, every
+      # later `uv run` rewrites uv.lock and dirties the tree / blocks commits.
+      # Regenerate it on the release PR branch so the bump and lockfile land
+      # together. Idempotent: re-runs each time release-please updates the PR.
+      - if: ${{ steps.release.outputs.prs_created == 'true' }}
+        uses: actions/checkout@v6
+        with:
+          ref: release-please--branches--${{ github.ref_name }}
+      - if: ${{ steps.release.outputs.prs_created == 'true' }}
+        uses: astral-sh/setup-uv@v8.1.0
+      - if: ${{ steps.release.outputs.prs_created == 'true' }}
+        name: Sync uv.lock on the release PR
+        run: |
+          uv lock
+          if ! git diff --quiet -- uv.lock; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add uv.lock
+            git commit -m "chore: sync uv.lock with release version"
+            git push origin HEAD:release-please--branches--${{ github.ref_name }}
+          fi
+
+  publish:
+    needs: release-please
+    if: needs.release-please.outputs.release_created == 'true' || inputs.tag != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ inputs.tag || needs.release-please.outputs.tag_name }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v8.1.0
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Build package
+        run: uv build
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          verbose: true
+          skip-existing: true
