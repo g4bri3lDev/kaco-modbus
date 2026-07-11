@@ -1,6 +1,6 @@
 # kaco-modbus
 
-Read a KACO blueplanet inverter over SunSpec Modbus TCP. This library discovers the device's register layout at runtime using SunSpec, then provides typed access to identity and live data. Built on the [modbus-connection](https://home-assistant-libs.github.io/modbus-connection/) library, it is the core device integration behind the [kaco Home Assistant integration](https://github.com/glackermeier/kaco-hass).
+Read a KACO blueplanet inverter over SunSpec Modbus TCP. This library discovers the device's register layout at runtime using SunSpec, then provides typed access to identity and live data. Built on the [modbus-connection](https://home-assistant-libs.github.io/modbus-connection/) library, it is the core device integration behind the [kaco Home Assistant integration](https://github.com/g4bri3lDev/kaco-modbus-hass).
 
 ## Installation
 
@@ -72,7 +72,7 @@ Data based on KACO's "MODBUS Protocol Application Note, Tx1 and Tx3 Series" (v18
 Clone and set up:
 
 ```bash
-git clone https://github.com/glackermeier/kaco-modbus
+git clone https://github.com/g4bri3lDev/kaco-modbus
 cd kaco-modbus
 uv sync
 ```

@@ -9,7 +9,7 @@ description = "Read a KACO blueplanet inverter over SunSpec Modbus TCP."
 readme = "README.md"
 requires-python = ">=3.13"
 license = { text = "Apache-2.0" }
-authors = [{ name = "Gabriel Lackermeier" }]
+authors = [{ name = "g4bri3lDev", email = "admin@g4bri3l.de" }]
 keywords = ["modbus", "kaco", "blueplanet", "sunspec", "solar", "home-assistant"]
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -21,7 +21,7 @@ dependencies = ["modbus-connection>=3.4,<4"]
 cli = ["modbus-connection[tmodbus]>=3.4,<4"]
 
 [project.urls]
-Homepage = "https://github.com/glackermeier/kaco-modbus"
+Homepage = "https://github.com/g4bri3lDev/kaco-modbus"
 
 [dependency-groups]
 dev = [

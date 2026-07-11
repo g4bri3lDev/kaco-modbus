@@ -125,12 +125,12 @@ ships a synthetic register image of a blueplanet 8.6 TL3 built from the
 SunSpec spec + KACO's application note; both the library tests and the HA
 integration tests (which stub the provider and run a real config flow +
 sensor platform via pytest-homeassistant-custom-component) seed the mock from
-it. `tests/reference/blueplanet_86tl3.json` will be captured from the real
-inverter with the dump CLI (`python -m kaco_modbus.dump --json`) and loaded
-back into the same `dict[int, int]` shape via
-`kaco_modbus.testing.registers_from_dump`, then replayed the same way once
-it exists. Until it's captured on-site, the synthetic image above is the
-canonical fixture.
+it. `tests/reference/blueplanet_86tl3.json` was captured from a real
+blueplanet 8.6 TL3 INT (firmware V5.53) with the dump CLI
+(`python -m kaco_modbus.dump --json`), is loaded back into the same
+`dict[int, int]` shape via `kaco_modbus.testing.registers_from_dump`, and is
+replayed in `tests/test_reference_dump.py` — the canonical ground-truth
+fixture alongside the synthetic image above.
 
 ## References
 
