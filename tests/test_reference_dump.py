@@ -21,7 +21,7 @@ async def test_real_device_image(mock_modbus_unit):
     probe = await KacoInverter.async_probe(mock_modbus_unit)
     assert probe.manufacturer == "KACO new energy"
     assert probe.model == "blueplanet 8.6 TL3 INT"
-    assert probe.serial == "8.6TL01700000"
+    assert probe.serial == "8.6TL01700000"  # anonymized in the captured image
     assert probe.firmware == "V5.53"
     assert probe.base_address == 40000
     assert [block.model_id for block in probe.blocks] == [
