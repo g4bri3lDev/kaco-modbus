@@ -9,10 +9,12 @@ from modbus_connection.model import ComponentGroup
 
 from . import common as common_model
 from . import inverter as inverter_model
+from . import mppt as mppt_model
 from .common import Common
 from .discovery import ModelBlock, find_sunspec_base, walk_model_chain
 from .exceptions import SunSpecModelMissingError
 from .inverter import Inverter
+from .mppt import MODULE_LENGTH, MpptFixed, MpptModule, module_count
 
 if TYPE_CHECKING:
     from modbus_connection import ModbusUnit
@@ -55,7 +57,26 @@ class KacoInverter:
 
         self.common = Common(unit, base_offset=common_block.address)
         self.inverter = Inverter(unit, base_offset=inverter_block.address)
-        self._group = ComponentGroup(unit, [self.common, self.inverter])
+
+        self.mppt: MpptFixed | None = None
+        self.mppt_modules: tuple[MpptModule, ...] = ()
+        components: list[Common | Inverter | MpptFixed | MpptModule] = [
+            self.common,
+            self.inverter,
+        ]
+        mppt_block = probe.block_for(mppt_model.MODEL_ID)
+        if mppt_block is not None:
+            self.mppt = MpptFixed(unit, base_offset=mppt_block.address)
+            self.mppt_modules = tuple(
+                MpptModule(
+                    unit, self.mppt, base_offset=mppt_block.address + m * MODULE_LENGTH
+                )
+                for m in range(module_count(mppt_block.length))
+            )
+            components.append(self.mppt)
+            components.extend(self.mppt_modules)
+
+        self._group = ComponentGroup(unit, components)
 
     @classmethod
     async def async_probe(cls, unit: ModbusUnit) -> KacoProbe:
