@@ -6,14 +6,13 @@ build-backend = "hatchling.build"
 name = "kaco-modbus"
 description = "Read and control KACO solar inverters over SunSpec Modbus."
 readme = "README.md"
-license = "MIT"
+license = "Apache-2.0"
 requires-python = ">=3.12"
-authors = [{ name = "Gabriel Lackermeier", email = "g.lackermeier@gmail.com" }]
+authors = [{ name = "g4bri3lDev" }]
 keywords = ["kaco", "modbus", "sunspec", "solar", "inverter", "home-assistant"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Topic :: Home Automation",

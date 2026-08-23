@@ -121,4 +121,4 @@ default after `revert_seconds` unless the value is written again. See
 
 ## License
 
-MIT
+Apache-2.0
