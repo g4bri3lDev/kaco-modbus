@@ -108,11 +108,11 @@ is no longer taking at zero — reporting 0 Hz and 0 V for a grid that is plainl
 live. The device object withholds those rather than passing them on:
 
 ```python
-inverter.is_running        # False while asleep
-inverter.frequency         # None unless running
-inverter.phase_voltages    # (None, None, None) unless running
-inverter.temperature       # None unless running
-inverter.power_factor      # None unless running
+inverter.is_running  # False while asleep
+inverter.frequency  # None unless running
+inverter.phase_voltages  # (None, None, None) unless running
+inverter.temperature  # None unless running
+inverter.power_factor  # None unless running
 ```
 
 Power, current and energy are *not* withheld — zero is genuinely correct for those.
