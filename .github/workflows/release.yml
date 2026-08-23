@@ -1,0 +1,60 @@
+name: Release Please
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to publish to PyPI (e.g. v1.0.0). Leave empty to run release-please only."
+        required: false
+        type: string
+
+permissions: {}
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+  publish:
+    needs: release-please
+    if: needs.release-please.outputs.release_created == 'true' || inputs.tag != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      # Trusted publishing: PyPI verifies this workflow rather than a token, and
+      # matches on the filename — so this file must stay release.yml, which is
+      # what the publisher on PyPI was registered against.
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || needs.release-please.outputs.tag_name }}
+
+      - uses: astral-sh/setup-uv@v5
+
+      - run: uv build
+
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          verbose: true
+          # 0.1.0 is already on PyPI and versions there are immutable, so a
+          # re-run must not fail on a version that is already published.
+          skip-existing: true
