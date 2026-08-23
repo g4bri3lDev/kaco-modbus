@@ -318,9 +318,7 @@ def main(argv: list[str] | None = None) -> int:
         metavar="SECONDS",
         help="keep the display updating (default every 5 s); Ctrl-C to stop",
     )
-    parser.add_argument(
-        "--debug", action="store_true", help="show library logging and tracebacks"
-    )
+    parser.add_argument("--debug", action="store_true", help="show library logging and tracebacks")
     args: Any = parser.parse_args(argv)
 
     # The backends log a traceback when a connection times out. That is useful

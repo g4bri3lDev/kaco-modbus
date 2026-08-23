@@ -265,73 +265,73 @@ class Common(SunSpecComponent):
 class InverterThreePhase(SunSpecComponent):
     """SunSpec model 103: Inverter (Three Phase)."""
 
-    a = uint16(2, scale_register=6, unit='A')
+    a = uint16(2, scale_register=6, unit="A")
     """Amps. AC Current."""
 
-    aph_a = uint16(3, scale_register=6, unit='A')
+    aph_a = uint16(3, scale_register=6, unit="A")
     """Amps PhaseA. Phase A Current."""
 
-    aph_b = uint16(4, scale_register=6, unit='A')
+    aph_b = uint16(4, scale_register=6, unit="A")
     """Amps PhaseB. Phase B Current."""
 
-    aph_c = uint16(5, scale_register=6, unit='A')
+    aph_c = uint16(5, scale_register=6, unit="A")
     """Amps PhaseC. Phase C Current."""
 
-    pp_vph_ab = uint16(7, scale_register=13, unit='V')
+    pp_vph_ab = uint16(7, scale_register=13, unit="V")
     """Phase Voltage AB."""
 
-    pp_vph_bc = uint16(8, scale_register=13, unit='V')
+    pp_vph_bc = uint16(8, scale_register=13, unit="V")
     """Phase Voltage BC."""
 
-    pp_vph_ca = uint16(9, scale_register=13, unit='V')
+    pp_vph_ca = uint16(9, scale_register=13, unit="V")
     """Phase Voltage CA."""
 
-    ph_vph_a = uint16(10, scale_register=13, unit='V')
+    ph_vph_a = uint16(10, scale_register=13, unit="V")
     """Phase Voltage AN."""
 
-    ph_vph_b = uint16(11, scale_register=13, unit='V')
+    ph_vph_b = uint16(11, scale_register=13, unit="V")
     """Phase Voltage BN."""
 
-    ph_vph_c = uint16(12, scale_register=13, unit='V')
+    ph_vph_c = uint16(12, scale_register=13, unit="V")
     """Phase Voltage CN."""
 
-    w = int16(14, scale_register=15, unit='W')
+    w = int16(14, scale_register=15, unit="W")
     """Watts. AC Power."""
 
-    hz = uint16(16, scale_register=17, unit='Hz')
+    hz = uint16(16, scale_register=17, unit="Hz")
     """Hz. Line Frequency."""
 
-    va = int16(18, scale_register=19, unit='VA')
+    va = int16(18, scale_register=19, unit="VA")
     """VA. AC Apparent Power."""
 
-    v_ar = int16(20, scale_register=21, unit='var')
+    v_ar = int16(20, scale_register=21, unit="var")
     """VAr. AC Reactive Power."""
 
-    pf = int16(22, scale_register=23, unit='Pct')
+    pf = int16(22, scale_register=23, unit="Pct")
     """PF. AC Power Factor."""
 
-    wh = acc32(24, scale_register=26, unit='Wh')
+    wh = acc32(24, scale_register=26, unit="Wh")
     """WattHours. AC Energy."""
 
-    dca = uint16(27, scale_register=28, unit='A')
+    dca = uint16(27, scale_register=28, unit="A")
     """DC Amps. DC Current."""
 
-    dcv = uint16(29, scale_register=30, unit='V')
+    dcv = uint16(29, scale_register=30, unit="V")
     """DC Voltage."""
 
-    dcw = int16(31, scale_register=32, unit='W')
+    dcw = int16(31, scale_register=32, unit="W")
     """DC Watts. DC Power."""
 
-    tmp_cab = int16(33, scale_register=37, unit='C')
+    tmp_cab = int16(33, scale_register=37, unit="C")
     """Cabinet Temperature."""
 
-    tmp_snk = int16(34, scale_register=37, unit='C')
+    tmp_snk = int16(34, scale_register=37, unit="C")
     """Heat Sink Temperature."""
 
-    tmp_trns = int16(35, scale_register=37, unit='C')
+    tmp_trns = int16(35, scale_register=37, unit="C")
     """Transformer Temperature."""
 
-    tmp_ot = int16(36, scale_register=37, unit='C')
+    tmp_ot = int16(36, scale_register=37, unit="C")
     """Other Temperature."""
 
     st = enum16(38, OperatingState)
@@ -365,107 +365,107 @@ class Nameplate(SunSpecComponent):
     der_typ = enum16(2, DERTyp)
     """DERTyp. Type of DER device. Default value is 4 to indicate PV device."""
 
-    w_rtg = uint16(3, scale_register=4, unit='W')
+    w_rtg = uint16(3, scale_register=4, unit="W")
     """WRtg. Continuous power output capability of the inverter."""
 
-    va_rtg = uint16(5, scale_register=6, unit='VA')
+    va_rtg = uint16(5, scale_register=6, unit="VA")
     """VARtg. Continuous Volt-Ampere capability of the inverter."""
 
-    v_ar_rtg_q1 = int16(7, scale_register=11, unit='var')
+    v_ar_rtg_q1 = int16(7, scale_register=11, unit="var")
     """VArRtgQ1. Continuous VAR capability of the inverter in quadrant 1."""
 
-    v_ar_rtg_q2 = int16(8, scale_register=11, unit='var')
+    v_ar_rtg_q2 = int16(8, scale_register=11, unit="var")
     """VArRtgQ2. Continuous VAR capability of the inverter in quadrant 2."""
 
-    v_ar_rtg_q3 = int16(9, scale_register=11, unit='var')
+    v_ar_rtg_q3 = int16(9, scale_register=11, unit="var")
     """VArRtgQ3. Continuous VAR capability of the inverter in quadrant 3."""
 
-    v_ar_rtg_q4 = int16(10, scale_register=11, unit='var')
+    v_ar_rtg_q4 = int16(10, scale_register=11, unit="var")
     """VArRtgQ4. Continuous VAR capability of the inverter in quadrant 4."""
 
-    a_rtg = uint16(12, scale_register=13, unit='A')
+    a_rtg = uint16(12, scale_register=13, unit="A")
     """ARtg. Maximum RMS AC current level capability of the inverter."""
 
-    pf_rtg_q1 = int16(14, scale_register=18, unit='cos()')
+    pf_rtg_q1 = int16(14, scale_register=18, unit="cos()")
     """PFRtgQ1. Minimum power factor capability of the inverter in quadrant 1."""
 
-    pf_rtg_q2 = int16(15, scale_register=18, unit='cos()')
+    pf_rtg_q2 = int16(15, scale_register=18, unit="cos()")
     """PFRtgQ2. Minimum power factor capability of the inverter in quadrant 2."""
 
-    pf_rtg_q3 = int16(16, scale_register=18, unit='cos()')
+    pf_rtg_q3 = int16(16, scale_register=18, unit="cos()")
     """PFRtgQ3. Minimum power factor capability of the inverter in quadrant 3."""
 
-    pf_rtg_q4 = int16(17, scale_register=18, unit='cos()')
+    pf_rtg_q4 = int16(17, scale_register=18, unit="cos()")
     """PFRtgQ4. Minimum power factor capability of the inverter in quadrant 4."""
 
-    wh_rtg = uint16(19, scale_register=20, unit='Wh')
+    wh_rtg = uint16(19, scale_register=20, unit="Wh")
     """WHRtg. Nominal energy rating of storage device."""
 
-    ahr_rtg = uint16(21, scale_register=22, unit='AH')
+    ahr_rtg = uint16(21, scale_register=22, unit="AH")
     """AhrRtg. The usable capacity of the battery. Maximum charge minus minimum
     charge from a technology capability perspective (Amp-hour capacity rating)."""
 
-    max_cha_rte = uint16(23, scale_register=24, unit='W')
+    max_cha_rte = uint16(23, scale_register=24, unit="W")
     """MaxChaRte. Maximum rate of energy transfer into the storage device."""
 
-    max_dis_cha_rte = uint16(25, scale_register=26, unit='W')
+    max_dis_cha_rte = uint16(25, scale_register=26, unit="W")
     """MaxDisChaRte. Maximum rate of energy transfer out of the storage device."""
 
 
 class Settings(SunSpecComponent):
     """SunSpec model 121: Basic Settings."""
 
-    w_max = uint16(2, scale_register=22, writable=True, unit='W')
+    w_max = uint16(2, scale_register=22, writable=True, unit="W")
     """WMax. Setting for maximum power output. Default to WRtg."""
 
-    v_ref = uint16(3, scale_register=23, writable=True, unit='V')
+    v_ref = uint16(3, scale_register=23, writable=True, unit="V")
     """VRef. Voltage at the PCC."""
 
-    v_ref_ofs = int16(4, scale_register=24, writable=True, unit='V')
+    v_ref_ofs = int16(4, scale_register=24, writable=True, unit="V")
     """VRefOfs. Offset from PCC to inverter."""
 
-    v_max = uint16(5, scale_register=25, writable=True, unit='V')
+    v_max = uint16(5, scale_register=25, writable=True, unit="V")
     """VMax. Setpoint for maximum voltage."""
 
-    v_min = uint16(6, scale_register=25, writable=True, unit='V')
+    v_min = uint16(6, scale_register=25, writable=True, unit="V")
     """VMin. Setpoint for minimum voltage."""
 
-    va_max = uint16(7, scale_register=26, writable=True, unit='VA')
+    va_max = uint16(7, scale_register=26, writable=True, unit="VA")
     """VAMax. Setpoint for maximum apparent power. Default to VARtg."""
 
-    v_ar_max_q1 = int16(8, scale_register=27, writable=True, unit='var')
+    v_ar_max_q1 = int16(8, scale_register=27, writable=True, unit="var")
     """VArMaxQ1. Setting for maximum reactive power in quadrant 1. Default to
     VArRtgQ1."""
 
-    v_ar_max_q2 = int16(9, scale_register=27, writable=True, unit='var')
+    v_ar_max_q2 = int16(9, scale_register=27, writable=True, unit="var")
     """VArMaxQ2. Setting for maximum reactive power in quadrant 2. Default to
     VArRtgQ2."""
 
-    v_ar_max_q3 = int16(10, scale_register=27, writable=True, unit='var')
+    v_ar_max_q3 = int16(10, scale_register=27, writable=True, unit="var")
     """VArMaxQ3. Setting for maximum reactive power in quadrant 3. Default to
     VArRtgQ3."""
 
-    v_ar_max_q4 = int16(11, scale_register=27, writable=True, unit='var')
+    v_ar_max_q4 = int16(11, scale_register=27, writable=True, unit="var")
     """VArMaxQ4. Setting for maximum reactive power in quadrant 4. Default to
     VArRtgQ4."""
 
-    w_gra = uint16(12, scale_register=28, writable=True, unit='% WMax/sec')
+    w_gra = uint16(12, scale_register=28, writable=True, unit="% WMax/sec")
     """WGra. Default ramp rate of change of active power due to command or internal
     action."""
 
-    pf_min_q1 = int16(13, scale_register=29, writable=True, unit='cos()')
+    pf_min_q1 = int16(13, scale_register=29, writable=True, unit="cos()")
     """PFMinQ1. Setpoint for minimum power factor value in quadrant 1. Default to
     PFRtgQ1."""
 
-    pf_min_q2 = int16(14, scale_register=29, writable=True, unit='cos()')
+    pf_min_q2 = int16(14, scale_register=29, writable=True, unit="cos()")
     """PFMinQ2. Setpoint for minimum power factor value in quadrant 2. Default to
     PFRtgQ2."""
 
-    pf_min_q3 = int16(15, scale_register=29, writable=True, unit='cos()')
+    pf_min_q3 = int16(15, scale_register=29, writable=True, unit="cos()")
     """PFMinQ3. Setpoint for minimum power factor value in quadrant 3. Default to
     PFRtgQ3."""
 
-    pf_min_q4 = int16(16, scale_register=29, writable=True, unit='cos()')
+    pf_min_q4 = int16(16, scale_register=29, writable=True, unit="cos()")
     """PFMinQ4. Setpoint for minimum power factor value in quadrant 4. Default to
     PFRtgQ4."""
 
@@ -476,12 +476,12 @@ class Settings(SunSpecComponent):
     clc_tot_va = enum16(18, ClcTotVA, writable=True)
     """ClcTotVA. Calculation method for total apparent power. 1=vector 2=arithmetic."""
 
-    max_rmp_rte = uint16(19, scale_register=30, writable=True, unit='% WGra')
+    max_rmp_rte = uint16(19, scale_register=30, writable=True, unit="% WGra")
     """MaxRmpRte. Setpoint for maximum ramp rate as percentage of nominal maximum
     ramp rate. This setting will limit the rate that watts delivery to the grid
     can increase or decrease in response to intermittent PV generation."""
 
-    ecp_nom_hz = uint16(20, scale_register=31, writable=True, unit='Hz')
+    ecp_nom_hz = uint16(20, scale_register=31, writable=True, unit="Hz")
     """ECPNomHz. Setpoint for nominal frequency at the ECP."""
 
     conn_ph = enum16(21, ConnPh, writable=True)
@@ -500,28 +500,28 @@ class Status(SunSpecComponent):
     ecp_conn = bitfield16(4, ECPConn)
     """ECPConn. ECP connection status: disconnected=0 connected=1."""
 
-    act_wh = acc64(5, unit='Wh')
+    act_wh = acc64(5, unit="Wh")
     """ActWh. AC lifetime active (real) energy output."""
 
-    act_v_ah = acc64(9, unit='VAh')
+    act_v_ah = acc64(9, unit="VAh")
     """ActVAh. AC lifetime apparent energy output."""
 
-    act_v_arh_q1 = acc64(13, unit='varh')
+    act_v_arh_q1 = acc64(13, unit="varh")
     """ActVArhQ1. AC lifetime reactive energy output in quadrant 1."""
 
-    act_v_arh_q2 = acc64(17, unit='varh')
+    act_v_arh_q2 = acc64(17, unit="varh")
     """ActVArhQ2. AC lifetime reactive energy output in quadrant 2."""
 
-    act_v_arh_q3 = acc64(21, unit='varh')
+    act_v_arh_q3 = acc64(21, unit="varh")
     """ActVArhQ3. AC lifetime negative energy output in quadrant 3."""
 
-    act_v_arh_q4 = acc64(25, unit='varh')
+    act_v_arh_q4 = acc64(25, unit="varh")
     """ActVArhQ4. AC lifetime reactive energy output in quadrant 4."""
 
-    v_ar_aval = int16(29, scale_register=30, unit='var')
+    v_ar_aval = int16(29, scale_register=30, unit="var")
     """VArAval. Amount of VARs available without impacting watts output."""
 
-    w_aval = uint16(31, scale_register=32, unit='W')
+    w_aval = uint16(31, scale_register=32, unit="W")
     """WAval. Amount of Watts available."""
 
     st_set_lim_msk = bitfield32(33, StSetLimMsk)
@@ -533,74 +533,74 @@ class Status(SunSpecComponent):
     tm_src = string(37, 4)
     """TmSrc. Source of time synchronization."""
 
-    tms = uint32(41, unit='Secs')
+    tms = uint32(41, unit="Secs")
     """Tms. Seconds since 01-01-2000 00:00 UTC."""
 
     rt_st = bitfield16(43, RtSt)
     """RtSt. Active ride-through status."""
 
-    ris = uint16(44, scale_register=45, unit='ohms')
+    ris = uint16(44, scale_register=45, unit="ohms")
     """Ris. Isolation resistance."""
 
 
 class Controls(SunSpecComponent):
     """SunSpec model 123: Immediate Controls."""
 
-    conn_win_tms = uint16(2, writable=True, unit='Secs')
+    conn_win_tms = uint16(2, writable=True, unit="Secs")
     """Conn_WinTms. Time window for connect/disconnect."""
 
-    conn_rvrt_tms = uint16(3, writable=True, unit='Secs')
+    conn_rvrt_tms = uint16(3, writable=True, unit="Secs")
     """Conn_RvrtTms. Timeout period for connect/disconnect."""
 
     conn = enum16(4, Conn, writable=True)
     """Conn. Connection control."""
 
-    w_max_lim_pct = uint16(5, scale_register=23, writable=True, unit='% WMax')
+    w_max_lim_pct = uint16(5, scale_register=23, writable=True, unit="% WMax")
     """WMaxLimPct. Set power output to specified level."""
 
-    w_max_lim_pct_win_tms = uint16(6, writable=True, unit='Secs')
+    w_max_lim_pct_win_tms = uint16(6, writable=True, unit="Secs")
     """WMaxLimPct_WinTms. Time window for power limit change."""
 
-    w_max_lim_pct_rvrt_tms = uint16(7, writable=True, unit='Secs')
+    w_max_lim_pct_rvrt_tms = uint16(7, writable=True, unit="Secs")
     """WMaxLimPct_RvrtTms. Timeout period for power limit."""
 
-    w_max_lim_pct_rmp_tms = uint16(8, writable=True, unit='Secs')
+    w_max_lim_pct_rmp_tms = uint16(8, writable=True, unit="Secs")
     """WMaxLimPct_RmpTms. Ramp time for moving from current setpoint to new setpoint."""
 
     w_max_lim_ena = enum16(9, WMaxLimEna, writable=True)
     """WMaxLim_Ena. Throttle enable/disable control."""
 
-    out_pf_set = int16(10, scale_register=24, writable=True, unit='cos()')
+    out_pf_set = int16(10, scale_register=24, writable=True, unit="cos()")
     """OutPFSet. Set power factor to specific value - cosine of angle."""
 
-    out_pf_set_win_tms = uint16(11, writable=True, unit='Secs')
+    out_pf_set_win_tms = uint16(11, writable=True, unit="Secs")
     """OutPFSet_WinTms. Time window for power factor change."""
 
-    out_pf_set_rvrt_tms = uint16(12, writable=True, unit='Secs')
+    out_pf_set_rvrt_tms = uint16(12, writable=True, unit="Secs")
     """OutPFSet_RvrtTms. Timeout period for power factor."""
 
-    out_pf_set_rmp_tms = uint16(13, writable=True, unit='Secs')
+    out_pf_set_rmp_tms = uint16(13, writable=True, unit="Secs")
     """OutPFSet_RmpTms. Ramp time for moving from current setpoint to new setpoint."""
 
     out_pf_set_ena = enum16(14, OutPFSetEna, writable=True)
     """OutPFSet_Ena. Fixed power factor enable/disable control."""
 
-    v_ar_w_max_pct = int16(15, scale_register=25, writable=True, unit='% WMax')
+    v_ar_w_max_pct = int16(15, scale_register=25, writable=True, unit="% WMax")
     """VArWMaxPct. Reactive power in percent of WMax."""
 
-    v_ar_max_pct = int16(16, scale_register=25, writable=True, unit='% VArMax')
+    v_ar_max_pct = int16(16, scale_register=25, writable=True, unit="% VArMax")
     """VArMaxPct. Reactive power in percent of VArMax."""
 
-    v_ar_aval_pct = int16(17, scale_register=25, writable=True, unit='% VArAval')
+    v_ar_aval_pct = int16(17, scale_register=25, writable=True, unit="% VArAval")
     """VArAvalPct. Reactive power in percent of VArAval."""
 
-    v_ar_pct_win_tms = uint16(18, writable=True, unit='Secs')
+    v_ar_pct_win_tms = uint16(18, writable=True, unit="Secs")
     """VArPct_WinTms. Time window for VAR limit change."""
 
-    v_ar_pct_rvrt_tms = uint16(19, writable=True, unit='Secs')
+    v_ar_pct_rvrt_tms = uint16(19, writable=True, unit="Secs")
     """VArPct_RvrtTms. Timeout period for VAR limit."""
 
-    v_ar_pct_rmp_tms = uint16(20, writable=True, unit='Secs')
+    v_ar_pct_rmp_tms = uint16(20, writable=True, unit="Secs")
     """VArPct_RmpTms. Ramp time for moving from current setpoint to new setpoint."""
 
     v_ar_pct_mod = enum16(21, VArPctMod, writable=True)
@@ -619,121 +619,121 @@ class VoltVarCurve(Component):
     dept_ref = enum16(13, DeptRef, writable=True)
     """DeptRef. Meaning of dependent variable: 1=%WMax 2=%VArMax 3=%VArAval."""
 
-    v1 = uint16(14, scale_register=9, writable=True, unit='% VRef')
+    v1 = uint16(14, scale_register=9, writable=True, unit="% VRef")
     """V1. Point 1 Volts."""
 
     v_ar1 = int16(15, scale_register=10, writable=True)
     """VAr1. Point 1 VARs."""
 
-    v2 = uint16(16, scale_register=9, writable=True, unit='% VRef')
+    v2 = uint16(16, scale_register=9, writable=True, unit="% VRef")
     """V2. Point 2 Volts."""
 
     v_ar2 = int16(17, scale_register=10, writable=True)
     """VAr2. Point 2 VARs."""
 
-    v3 = uint16(18, scale_register=9, writable=True, unit='% VRef')
+    v3 = uint16(18, scale_register=9, writable=True, unit="% VRef")
     """V3. Point 3 Volts."""
 
     v_ar3 = int16(19, scale_register=10, writable=True)
     """VAr3. Point 3 VARs."""
 
-    v4 = uint16(20, scale_register=9, writable=True, unit='% VRef')
+    v4 = uint16(20, scale_register=9, writable=True, unit="% VRef")
     """V4. Point 4 Volts."""
 
     v_ar4 = int16(21, scale_register=10, writable=True)
     """VAr4. Point 4 VARs."""
 
-    v5 = uint16(22, scale_register=9, writable=True, unit='% VRef')
+    v5 = uint16(22, scale_register=9, writable=True, unit="% VRef")
     """V5. Point 5 Volts."""
 
     v_ar5 = int16(23, scale_register=10, writable=True)
     """VAr5. Point 5 VARs."""
 
-    v6 = uint16(24, scale_register=9, writable=True, unit='% VRef')
+    v6 = uint16(24, scale_register=9, writable=True, unit="% VRef")
     """V6. Point 6 Volts."""
 
     v_ar6 = int16(25, scale_register=10, writable=True)
     """VAr6. Point 6 VARs."""
 
-    v7 = uint16(26, scale_register=9, writable=True, unit='% VRef')
+    v7 = uint16(26, scale_register=9, writable=True, unit="% VRef")
     """V7. Point 7 Volts."""
 
     v_ar7 = int16(27, scale_register=10, writable=True)
     """VAr7. Point 7 VARs."""
 
-    v8 = uint16(28, scale_register=9, writable=True, unit='% VRef')
+    v8 = uint16(28, scale_register=9, writable=True, unit="% VRef")
     """V8. Point 8 Volts."""
 
     v_ar8 = int16(29, scale_register=10, writable=True)
     """VAr8. Point 8 VARs."""
 
-    v9 = uint16(30, scale_register=9, writable=True, unit='% VRef')
+    v9 = uint16(30, scale_register=9, writable=True, unit="% VRef")
     """V9. Point 9 Volts."""
 
     v_ar9 = int16(31, scale_register=10, writable=True)
     """VAr9. Point 9 VARs."""
 
-    v10 = uint16(32, scale_register=9, writable=True, unit='% VRef')
+    v10 = uint16(32, scale_register=9, writable=True, unit="% VRef")
     """V10. Point 10 Volts."""
 
     v_ar10 = int16(33, scale_register=10, writable=True)
     """VAr10. Point 10 VARs."""
 
-    v11 = uint16(34, scale_register=9, writable=True, unit='% VRef')
+    v11 = uint16(34, scale_register=9, writable=True, unit="% VRef")
     """V11. Point 11 Volts."""
 
     v_ar11 = int16(35, scale_register=10, writable=True)
     """VAr11. Point 11 VARs."""
 
-    v12 = uint16(36, scale_register=9, writable=True, unit='% VRef')
+    v12 = uint16(36, scale_register=9, writable=True, unit="% VRef")
     """V12. Point 12 Volts."""
 
     v_ar12 = int16(37, scale_register=10, writable=True)
     """VAr12. Point 12 VARs."""
 
-    v13 = uint16(38, scale_register=9, writable=True, unit='% VRef')
+    v13 = uint16(38, scale_register=9, writable=True, unit="% VRef")
     """V13. Point 13 Volts."""
 
     v_ar13 = int16(39, scale_register=10, writable=True)
     """VAr13. Point 13 VARs."""
 
-    v14 = uint16(40, scale_register=9, writable=True, unit='% VRef')
+    v14 = uint16(40, scale_register=9, writable=True, unit="% VRef")
     """V14. Point 14 Volts."""
 
     v_ar14 = int16(41, scale_register=10, writable=True)
     """VAr14. Point 14 VARs."""
 
-    v15 = uint16(42, scale_register=9, writable=True, unit='% VRef')
+    v15 = uint16(42, scale_register=9, writable=True, unit="% VRef")
     """V15. Point 15 Volts."""
 
     v_ar15 = int16(43, scale_register=10, writable=True)
     """VAr15. Point 15 VARs."""
 
-    v16 = uint16(44, scale_register=9, writable=True, unit='% VRef')
+    v16 = uint16(44, scale_register=9, writable=True, unit="% VRef")
     """V16. Point 16 Volts."""
 
     v_ar16 = int16(45, scale_register=10, writable=True)
     """VAr16. Point 16 VARs."""
 
-    v17 = uint16(46, scale_register=9, writable=True, unit='% VRef')
+    v17 = uint16(46, scale_register=9, writable=True, unit="% VRef")
     """V17. Point 17 Volts."""
 
     v_ar17 = int16(47, scale_register=10, writable=True)
     """VAr17. Point 17 VARs."""
 
-    v18 = uint16(48, scale_register=9, writable=True, unit='% VRef')
+    v18 = uint16(48, scale_register=9, writable=True, unit="% VRef")
     """V18. Point 18 Volts."""
 
     v_ar18 = int16(49, scale_register=10, writable=True)
     """VAr18. Point 18 VARs."""
 
-    v19 = uint16(50, scale_register=9, writable=True, unit='% VRef')
+    v19 = uint16(50, scale_register=9, writable=True, unit="% VRef")
     """V19. Point 19 Volts."""
 
     v_ar19 = int16(51, scale_register=10, writable=True)
     """VAr19. Point 19 VARs."""
 
-    v20 = uint16(52, scale_register=9, writable=True, unit='% VRef')
+    v20 = uint16(52, scale_register=9, writable=True, unit="% VRef")
     """V20. Point 20 Volts."""
 
     v_ar20 = int16(53, scale_register=10, writable=True)
@@ -742,15 +742,15 @@ class VoltVarCurve(Component):
     crv_nam = string(54, 8, writable=True)
     """CrvNam. Optional description for curve. (Max 16 chars)."""
 
-    rmp_tms = uint16(62, writable=True, unit='Secs')
+    rmp_tms = uint16(62, writable=True, unit="Secs")
     """RmpTms. The time of the PT1 in seconds (time to accomplish a change of 95%)."""
 
-    rmp_dec_tmm = uint16(63, scale_register=11, writable=True, unit='% ref_value/min')
+    rmp_dec_tmm = uint16(63, scale_register=11, writable=True, unit="% ref_value/min")
     """RmpDecTmm. The maximum rate at which the VAR value may be reduced in response
     to changes in the voltage value. %refVal is %WMax %VArMax or %VArAval
     depending on value of DeptRef."""
 
-    rmp_inc_tmm = uint16(64, scale_register=11, writable=True, unit='% ref_value/min')
+    rmp_inc_tmm = uint16(64, scale_register=11, writable=True, unit="% ref_value/min")
     """RmpIncTmm. The maximum rate at which the VAR value may be increased in
     response to changes in the voltage value. %refVal is %WMax %VArMax or %VArAval
     depending on value of DeptRef."""
@@ -768,13 +768,13 @@ class VoltVar(SunSpecComponent):
     mod_ena = bitfield16(3, ModEna, writable=True)
     """ModEna. Is Volt-VAR control active."""
 
-    win_tms = uint16(4, writable=True, unit='Secs')
+    win_tms = uint16(4, writable=True, unit="Secs")
     """WinTms. Time window for volt-VAR change."""
 
-    rvrt_tms = uint16(5, writable=True, unit='Secs')
+    rvrt_tms = uint16(5, writable=True, unit="Secs")
     """RvrtTms. Timeout period for volt-VAR curve selection."""
 
-    rmp_tms = uint16(6, writable=True, unit='Secs')
+    rmp_tms = uint16(6, writable=True, unit="Secs")
     """RmpTms. The time of the PT1 in seconds (time to accomplish a change of 95%)."""
 
     n_crv = uint16(7)
@@ -794,124 +794,124 @@ class LvrtCurve(Component):
     act_pt = uint16(12, writable=True)
     """ActPt. Number of active points in array."""
 
-    tms1 = uint16(13, scale_register=9, writable=True, unit='Secs')
+    tms1 = uint16(13, scale_register=9, writable=True, unit="Secs")
     """Tms1. Point 1 must disconnect duration."""
 
-    v1 = uint16(14, scale_register=10, writable=True, unit='% VRef')
+    v1 = uint16(14, scale_register=10, writable=True, unit="% VRef")
     """V1. Point 1 must disconnect voltage."""
 
-    tms2 = uint16(15, scale_register=9, writable=True, unit='Secs')
+    tms2 = uint16(15, scale_register=9, writable=True, unit="Secs")
     """Tms2. Point 2 must disconnect duration."""
 
-    v2 = uint16(16, scale_register=10, writable=True, unit='% VRef')
+    v2 = uint16(16, scale_register=10, writable=True, unit="% VRef")
     """V2. Point 2 must disconnect voltage."""
 
-    tms3 = uint16(17, scale_register=9, writable=True, unit='Secs')
+    tms3 = uint16(17, scale_register=9, writable=True, unit="Secs")
     """Tms3. Point 3 must disconnect duration."""
 
-    v3 = uint16(18, scale_register=10, writable=True, unit='% VRef')
+    v3 = uint16(18, scale_register=10, writable=True, unit="% VRef")
     """V3. Point 3 must disconnect voltage."""
 
-    tms4 = uint16(19, scale_register=9, writable=True, unit='Secs')
+    tms4 = uint16(19, scale_register=9, writable=True, unit="Secs")
     """Tms4. Point 4 must disconnect duration."""
 
-    v4 = uint16(20, scale_register=10, writable=True, unit='% VRef')
+    v4 = uint16(20, scale_register=10, writable=True, unit="% VRef")
     """V4. Point 4 must disconnect voltage."""
 
-    tms5 = uint16(21, scale_register=9, writable=True, unit='Secs')
+    tms5 = uint16(21, scale_register=9, writable=True, unit="Secs")
     """Tms5. Point 5 must disconnect duration."""
 
-    v5 = uint16(22, scale_register=10, writable=True, unit='% VRef')
+    v5 = uint16(22, scale_register=10, writable=True, unit="% VRef")
     """V5. Point 5 must disconnect voltage."""
 
-    tms6 = uint16(23, scale_register=9, writable=True, unit='Secs')
+    tms6 = uint16(23, scale_register=9, writable=True, unit="Secs")
     """Tms6. Point 6 must disconnect duration."""
 
-    v6 = uint16(24, scale_register=10, writable=True, unit='% VRef')
+    v6 = uint16(24, scale_register=10, writable=True, unit="% VRef")
     """V6. Point 6 must disconnect voltage."""
 
-    tms7 = uint16(25, scale_register=9, writable=True, unit='Secs')
+    tms7 = uint16(25, scale_register=9, writable=True, unit="Secs")
     """Tms7. Point 7 must disconnect duration."""
 
-    v7 = uint16(26, scale_register=10, writable=True, unit='% VRef')
+    v7 = uint16(26, scale_register=10, writable=True, unit="% VRef")
     """V7. Point 7 must disconnect voltage."""
 
-    tms8 = uint16(27, scale_register=9, writable=True, unit='Secs')
+    tms8 = uint16(27, scale_register=9, writable=True, unit="Secs")
     """Tms8. Point 8 must disconnect duration."""
 
-    v8 = uint16(28, scale_register=10, writable=True, unit='% VRef')
+    v8 = uint16(28, scale_register=10, writable=True, unit="% VRef")
     """V8. Point 8 must disconnect voltage."""
 
-    tms9 = uint16(29, scale_register=9, writable=True, unit='Secs')
+    tms9 = uint16(29, scale_register=9, writable=True, unit="Secs")
     """Tms9. Point 9 must disconnect duration."""
 
-    v9 = uint16(30, scale_register=10, writable=True, unit='% VRef')
+    v9 = uint16(30, scale_register=10, writable=True, unit="% VRef")
     """V9. Point 9 must disconnect voltage."""
 
-    tms10 = uint16(31, scale_register=9, writable=True, unit='Secs')
+    tms10 = uint16(31, scale_register=9, writable=True, unit="Secs")
     """Tms10. Point 10 must disconnect duration."""
 
-    v10 = uint16(32, scale_register=10, writable=True, unit='% VRef')
+    v10 = uint16(32, scale_register=10, writable=True, unit="% VRef")
     """V10. Point 10 must disconnect voltage."""
 
-    tms11 = uint16(33, scale_register=9, writable=True, unit='Secs')
+    tms11 = uint16(33, scale_register=9, writable=True, unit="Secs")
     """Tms11. Point 11 must disconnect duration."""
 
-    v11 = uint16(34, scale_register=10, writable=True, unit='% VRef')
+    v11 = uint16(34, scale_register=10, writable=True, unit="% VRef")
     """V11. Point 11 must disconnect voltage."""
 
-    tms12 = uint16(35, scale_register=9, writable=True, unit='Secs')
+    tms12 = uint16(35, scale_register=9, writable=True, unit="Secs")
     """Tms12. Point 12 must disconnect duration."""
 
-    v12 = uint16(36, scale_register=10, writable=True, unit='% VRef')
+    v12 = uint16(36, scale_register=10, writable=True, unit="% VRef")
     """V12. Point 12 must disconnect voltage."""
 
-    tms13 = uint16(37, scale_register=9, writable=True, unit='Secs')
+    tms13 = uint16(37, scale_register=9, writable=True, unit="Secs")
     """Tms13. Point 13 must disconnect duration."""
 
-    v13 = uint16(38, scale_register=10, writable=True, unit='% VRef')
+    v13 = uint16(38, scale_register=10, writable=True, unit="% VRef")
     """V13. Point 13 must disconnect voltage."""
 
-    tms14 = uint16(39, scale_register=9, writable=True, unit='Secs')
+    tms14 = uint16(39, scale_register=9, writable=True, unit="Secs")
     """Tms14. Point 14 must disconnect duration."""
 
-    v14 = uint16(40, scale_register=10, writable=True, unit='% VRef')
+    v14 = uint16(40, scale_register=10, writable=True, unit="% VRef")
     """V14. Point 14 must disconnect voltage."""
 
-    tms15 = uint16(41, scale_register=9, writable=True, unit='Secs')
+    tms15 = uint16(41, scale_register=9, writable=True, unit="Secs")
     """Tms15. Point 15 must disconnect duration."""
 
-    v15 = uint16(42, scale_register=10, writable=True, unit='% VRef')
+    v15 = uint16(42, scale_register=10, writable=True, unit="% VRef")
     """V15. Point 15 must disconnect voltage."""
 
-    tms16 = uint16(43, scale_register=9, writable=True, unit='Secs')
+    tms16 = uint16(43, scale_register=9, writable=True, unit="Secs")
     """Tms16. Point 16 must disconnect duration."""
 
-    v16 = uint16(44, scale_register=10, writable=True, unit='% VRef')
+    v16 = uint16(44, scale_register=10, writable=True, unit="% VRef")
     """V16. Point 16 must disconnect voltage."""
 
-    tms17 = uint16(45, scale_register=9, writable=True, unit='Secs')
+    tms17 = uint16(45, scale_register=9, writable=True, unit="Secs")
     """Tms17. Point 17 must disconnect duration."""
 
-    v17 = uint16(46, scale_register=10, writable=True, unit='% VRef')
+    v17 = uint16(46, scale_register=10, writable=True, unit="% VRef")
     """V17. Point 17 must disconnect voltage."""
 
-    tms18 = uint16(47, scale_register=9, writable=True, unit='Secs')
+    tms18 = uint16(47, scale_register=9, writable=True, unit="Secs")
     """Tms18. Point 18 must disconnect duration."""
 
-    v18 = uint16(48, scale_register=10, writable=True, unit='% VRef')
+    v18 = uint16(48, scale_register=10, writable=True, unit="% VRef")
     """V18. Point 18 must disconnect voltage."""
 
-    tms19 = uint16(49, scale_register=9, writable=True, unit='Secs')
+    tms19 = uint16(49, scale_register=9, writable=True, unit="Secs")
     """Tms19. Point 19 must disconnect duration."""
 
-    v19 = uint16(50, scale_register=10, writable=True, unit='% VRef')
+    v19 = uint16(50, scale_register=10, writable=True, unit="% VRef")
     """V19. Point 19 must disconnect voltage."""
 
-    tms20 = uint16(51, scale_register=9, writable=True, unit='Secs')
+    tms20 = uint16(51, scale_register=9, writable=True, unit="Secs")
     """Tms20. Point 20 must disconnect duration."""
 
-    v20 = uint16(52, scale_register=10, writable=True, unit='% VRef')
+    v20 = uint16(52, scale_register=10, writable=True, unit="% VRef")
     """V20. Point 20 must disconnect voltage."""
 
     crv_nam = string(53, 8, writable=True)
@@ -930,13 +930,13 @@ class Lvrt(SunSpecComponent):
     mod_ena = bitfield16(3, ModEna, writable=True)
     """ModEna. LVRT control mode. Enable active curve."""
 
-    win_tms = uint16(4, writable=True, unit='Secs')
+    win_tms = uint16(4, writable=True, unit="Secs")
     """WinTms. Time window for LVRT change."""
 
-    rvrt_tms = uint16(5, writable=True, unit='Secs')
+    rvrt_tms = uint16(5, writable=True, unit="Secs")
     """RvrtTms. Timeout period for LVRT curve selection."""
 
-    rmp_tms = uint16(6, writable=True, unit='Secs')
+    rmp_tms = uint16(6, writable=True, unit="Secs")
     """RmpTms. Ramp time for moving from current mode to new mode."""
 
     n_crv = uint16(7)
@@ -956,124 +956,124 @@ class HvrtCurve(Component):
     act_pt = uint16(12, writable=True)
     """ActPt. Number of active points in array."""
 
-    tms1 = uint16(13, scale_register=9, writable=True, unit='Secs')
+    tms1 = uint16(13, scale_register=9, writable=True, unit="Secs")
     """Tms1. Point 1 must disconnect duration."""
 
-    v1 = uint16(14, scale_register=10, writable=True, unit='% VRef')
+    v1 = uint16(14, scale_register=10, writable=True, unit="% VRef")
     """V1. Point 1 must disconnect voltage."""
 
-    tms2 = uint16(15, scale_register=9, writable=True, unit='Secs')
+    tms2 = uint16(15, scale_register=9, writable=True, unit="Secs")
     """Tms2. Point 2 must disconnect duration."""
 
-    v2 = uint16(16, scale_register=10, writable=True, unit='% VRef')
+    v2 = uint16(16, scale_register=10, writable=True, unit="% VRef")
     """V2. Point 2 must disconnect voltage."""
 
-    tms3 = uint16(17, scale_register=9, writable=True, unit='Secs')
+    tms3 = uint16(17, scale_register=9, writable=True, unit="Secs")
     """Tms3. Point 3 must disconnect duration."""
 
-    v3 = uint16(18, scale_register=10, writable=True, unit='% VRef')
+    v3 = uint16(18, scale_register=10, writable=True, unit="% VRef")
     """V3. Point 3 must disconnect voltage."""
 
-    tms4 = uint16(19, scale_register=9, writable=True, unit='Secs')
+    tms4 = uint16(19, scale_register=9, writable=True, unit="Secs")
     """Tms4. Point 4 must disconnect duration."""
 
-    v4 = uint16(20, scale_register=10, writable=True, unit='% VRef')
+    v4 = uint16(20, scale_register=10, writable=True, unit="% VRef")
     """V4. Point 4 must disconnect voltage."""
 
-    tms5 = uint16(21, scale_register=9, writable=True, unit='Secs')
+    tms5 = uint16(21, scale_register=9, writable=True, unit="Secs")
     """Tms5. Point 5 must disconnect duration."""
 
-    v5 = uint16(22, scale_register=10, writable=True, unit='% VRef')
+    v5 = uint16(22, scale_register=10, writable=True, unit="% VRef")
     """V5. Point 5 must disconnect voltage."""
 
-    tms6 = uint16(23, scale_register=9, writable=True, unit='Secs')
+    tms6 = uint16(23, scale_register=9, writable=True, unit="Secs")
     """Tms6. Point 6 must disconnect duration."""
 
-    v6 = uint16(24, scale_register=10, writable=True, unit='% VRef')
+    v6 = uint16(24, scale_register=10, writable=True, unit="% VRef")
     """V6. Point 6 must disconnect voltage."""
 
-    tms7 = uint16(25, scale_register=9, writable=True, unit='Secs')
+    tms7 = uint16(25, scale_register=9, writable=True, unit="Secs")
     """Tms7. Point 7 must disconnect duration."""
 
-    v7 = uint16(26, scale_register=10, writable=True, unit='% VRef')
+    v7 = uint16(26, scale_register=10, writable=True, unit="% VRef")
     """V7. Point 7 must disconnect voltage."""
 
-    tms8 = uint16(27, scale_register=9, writable=True, unit='Secs')
+    tms8 = uint16(27, scale_register=9, writable=True, unit="Secs")
     """Tms8. Point 8 must disconnect duration."""
 
-    v8 = uint16(28, scale_register=10, writable=True, unit='% VRef')
+    v8 = uint16(28, scale_register=10, writable=True, unit="% VRef")
     """V8. Point 8 must disconnect voltage."""
 
-    tms9 = uint16(29, scale_register=9, writable=True, unit='Secs')
+    tms9 = uint16(29, scale_register=9, writable=True, unit="Secs")
     """Tms9. Point 9 must disconnect duration."""
 
-    v9 = uint16(30, scale_register=10, writable=True, unit='% VRef')
+    v9 = uint16(30, scale_register=10, writable=True, unit="% VRef")
     """V9. Point 9 must disconnect voltage."""
 
-    tms10 = uint16(31, scale_register=9, writable=True, unit='Secs')
+    tms10 = uint16(31, scale_register=9, writable=True, unit="Secs")
     """Tms10. Point 10 must disconnect duration."""
 
-    v10 = uint16(32, scale_register=10, writable=True, unit='% VRef')
+    v10 = uint16(32, scale_register=10, writable=True, unit="% VRef")
     """V10. Point 10 must disconnect voltage."""
 
-    tms11 = uint16(33, scale_register=9, writable=True, unit='Secs')
+    tms11 = uint16(33, scale_register=9, writable=True, unit="Secs")
     """Tms11. Point 11 must disconnect duration."""
 
-    v11 = uint16(34, scale_register=10, writable=True, unit='% VRef')
+    v11 = uint16(34, scale_register=10, writable=True, unit="% VRef")
     """V11. Point 11 must disconnect voltage."""
 
-    tms12 = uint16(35, scale_register=9, writable=True, unit='Secs')
+    tms12 = uint16(35, scale_register=9, writable=True, unit="Secs")
     """Tms12. Point 12 must disconnect duration."""
 
-    v12 = uint16(36, scale_register=10, writable=True, unit='% VRef')
+    v12 = uint16(36, scale_register=10, writable=True, unit="% VRef")
     """V12. Point 12 must disconnect voltage."""
 
-    tms13 = uint16(37, scale_register=9, writable=True, unit='Secs')
+    tms13 = uint16(37, scale_register=9, writable=True, unit="Secs")
     """Tms13. Point 13 must disconnect duration."""
 
-    v13 = uint16(38, scale_register=10, writable=True, unit='% VRef')
+    v13 = uint16(38, scale_register=10, writable=True, unit="% VRef")
     """V13. Point 13 must disconnect voltage."""
 
-    tms14 = uint16(39, scale_register=9, writable=True, unit='Secs')
+    tms14 = uint16(39, scale_register=9, writable=True, unit="Secs")
     """Tms14. Point 14 must disconnect duration."""
 
-    v14 = uint16(40, scale_register=10, writable=True, unit='% VRef')
+    v14 = uint16(40, scale_register=10, writable=True, unit="% VRef")
     """V14. Point 14 must disconnect voltage."""
 
-    tms15 = uint16(41, scale_register=9, writable=True, unit='Secs')
+    tms15 = uint16(41, scale_register=9, writable=True, unit="Secs")
     """Tms15. Point 15 must disconnect duration."""
 
-    v15 = uint16(42, scale_register=10, writable=True, unit='% VRef')
+    v15 = uint16(42, scale_register=10, writable=True, unit="% VRef")
     """V15. Point 15 must disconnect voltage."""
 
-    tms16 = uint16(43, scale_register=9, writable=True, unit='Secs')
+    tms16 = uint16(43, scale_register=9, writable=True, unit="Secs")
     """Tms16. Point 16 must disconnect duration."""
 
-    v16 = uint16(44, scale_register=10, writable=True, unit='% VRef')
+    v16 = uint16(44, scale_register=10, writable=True, unit="% VRef")
     """V16. Point 16 must disconnect voltage."""
 
-    tms17 = uint16(45, scale_register=9, writable=True, unit='Secs')
+    tms17 = uint16(45, scale_register=9, writable=True, unit="Secs")
     """Tms17. Point 17 must disconnect duration."""
 
-    v17 = uint16(46, scale_register=10, writable=True, unit='% VRef')
+    v17 = uint16(46, scale_register=10, writable=True, unit="% VRef")
     """V17. Point 17 must disconnect voltage."""
 
-    tms18 = uint16(47, scale_register=9, writable=True, unit='Secs')
+    tms18 = uint16(47, scale_register=9, writable=True, unit="Secs")
     """Tms18. Point 18 must disconnect duration."""
 
-    v18 = uint16(48, scale_register=10, writable=True, unit='% VRef')
+    v18 = uint16(48, scale_register=10, writable=True, unit="% VRef")
     """V18. Point 18 must disconnect voltage."""
 
-    tms19 = uint16(49, scale_register=9, writable=True, unit='Secs')
+    tms19 = uint16(49, scale_register=9, writable=True, unit="Secs")
     """Tms19. Point 19 must disconnect duration."""
 
-    v19 = uint16(50, scale_register=10, writable=True, unit='% VRef')
+    v19 = uint16(50, scale_register=10, writable=True, unit="% VRef")
     """V19. Point 19 must disconnect voltage."""
 
-    tms20 = uint16(51, scale_register=9, writable=True, unit='Secs')
+    tms20 = uint16(51, scale_register=9, writable=True, unit="Secs")
     """Tms20. Point 20 must disconnect duration."""
 
-    v20 = uint16(52, scale_register=10, writable=True, unit='% VRef')
+    v20 = uint16(52, scale_register=10, writable=True, unit="% VRef")
     """V20. Point 20 must disconnect voltage."""
 
     crv_nam = string(53, 8, writable=True)
@@ -1092,13 +1092,13 @@ class Hvrt(SunSpecComponent):
     mod_ena = bitfield16(3, ModEna, writable=True)
     """ModEna. HVRT control mode. Enable active curve."""
 
-    win_tms = uint16(4, writable=True, unit='Secs')
+    win_tms = uint16(4, writable=True, unit="Secs")
     """WinTms. Time window for HVRT change."""
 
-    rvrt_tms = uint16(5, writable=True, unit='Secs')
+    rvrt_tms = uint16(5, writable=True, unit="Secs")
     """RvrtTms. Timeout period for HVRT curve selection."""
 
-    rmp_tms = uint16(6, writable=True, unit='Secs')
+    rmp_tms = uint16(6, writable=True, unit="Secs")
     """RmpTms. Ramp time for moving from current mode to new mode."""
 
     n_crv = uint16(7)
@@ -1121,138 +1121,138 @@ class VoltWattCurve(Component):
     dept_ref = enum16(13, VoltWattCurveDeptRef, writable=True)
     """DeptRef. Defines the meaning of the Watts DeptRef. 1=% WMax 2=% WAvail."""
 
-    v1 = uint16(14, scale_register=9, writable=True, unit='% VRef')
+    v1 = uint16(14, scale_register=9, writable=True, unit="% VRef")
     """V1. Point 1 Volts."""
 
-    w1 = int16(15, scale_register=10, writable=True, unit='% VRef')
+    w1 = int16(15, scale_register=10, writable=True, unit="% VRef")
     """W1. Point 1 Watts."""
 
-    v2 = uint16(16, scale_register=9, writable=True, unit='% VRef')
+    v2 = uint16(16, scale_register=9, writable=True, unit="% VRef")
     """V2. Point 2 Volts."""
 
-    w2 = int16(17, scale_register=10, writable=True, unit='% VRef')
+    w2 = int16(17, scale_register=10, writable=True, unit="% VRef")
     """W2. Point 2 Watts."""
 
-    v3 = uint16(18, scale_register=9, writable=True, unit='% VRef')
+    v3 = uint16(18, scale_register=9, writable=True, unit="% VRef")
     """V3. Point 3 Volts."""
 
-    w3 = int16(19, scale_register=10, writable=True, unit='% VRef')
+    w3 = int16(19, scale_register=10, writable=True, unit="% VRef")
     """W3. Point 3 Watts."""
 
-    v4 = uint16(20, scale_register=9, writable=True, unit='% VRef')
+    v4 = uint16(20, scale_register=9, writable=True, unit="% VRef")
     """V4. Point 4 Volts."""
 
-    w4 = int16(21, scale_register=10, writable=True, unit='% VRef')
+    w4 = int16(21, scale_register=10, writable=True, unit="% VRef")
     """W4. Point 4 Watts."""
 
-    v5 = uint16(22, scale_register=9, writable=True, unit='% VRef')
+    v5 = uint16(22, scale_register=9, writable=True, unit="% VRef")
     """V5. Point 5 Volts."""
 
-    w5 = int16(23, scale_register=10, writable=True, unit='% VRef')
+    w5 = int16(23, scale_register=10, writable=True, unit="% VRef")
     """W5. Point 5 Watts."""
 
-    v6 = uint16(24, scale_register=9, writable=True, unit='% VRef')
+    v6 = uint16(24, scale_register=9, writable=True, unit="% VRef")
     """V6. Point 6 Volts."""
 
-    w6 = int16(25, scale_register=10, writable=True, unit='% VRef')
+    w6 = int16(25, scale_register=10, writable=True, unit="% VRef")
     """W6. Point 6 Watts."""
 
-    v7 = uint16(26, scale_register=9, writable=True, unit='% VRef')
+    v7 = uint16(26, scale_register=9, writable=True, unit="% VRef")
     """V7. Point 7 Volts."""
 
-    w7 = int16(27, scale_register=10, writable=True, unit='% VRef')
+    w7 = int16(27, scale_register=10, writable=True, unit="% VRef")
     """W7. Point 7 Watts."""
 
-    v8 = uint16(28, scale_register=9, writable=True, unit='% VRef')
+    v8 = uint16(28, scale_register=9, writable=True, unit="% VRef")
     """V8. Point 8 Volts."""
 
-    w8 = int16(29, scale_register=10, writable=True, unit='% VRef')
+    w8 = int16(29, scale_register=10, writable=True, unit="% VRef")
     """W8. Point 8 Watts."""
 
-    v9 = uint16(30, scale_register=9, writable=True, unit='% VRef')
+    v9 = uint16(30, scale_register=9, writable=True, unit="% VRef")
     """V9. Point 9 Volts."""
 
-    w9 = int16(31, scale_register=10, writable=True, unit='% VRef')
+    w9 = int16(31, scale_register=10, writable=True, unit="% VRef")
     """W9. Point 9 Watts."""
 
-    v10 = uint16(32, scale_register=9, writable=True, unit='% VRef')
+    v10 = uint16(32, scale_register=9, writable=True, unit="% VRef")
     """V10. Point 10 Volts."""
 
-    w10 = int16(33, scale_register=10, writable=True, unit='% VRef')
+    w10 = int16(33, scale_register=10, writable=True, unit="% VRef")
     """W10. Point 10 Watts."""
 
-    v11 = uint16(34, scale_register=9, writable=True, unit='% VRef')
+    v11 = uint16(34, scale_register=9, writable=True, unit="% VRef")
     """V11. Point 11 Volts."""
 
-    w11 = int16(35, scale_register=10, writable=True, unit='% VRef')
+    w11 = int16(35, scale_register=10, writable=True, unit="% VRef")
     """W11. Point 11 Watts."""
 
-    v12 = uint16(36, scale_register=9, writable=True, unit='% VRef')
+    v12 = uint16(36, scale_register=9, writable=True, unit="% VRef")
     """V12. Point 12 Volts."""
 
-    w12 = int16(37, scale_register=10, writable=True, unit='% VRef')
+    w12 = int16(37, scale_register=10, writable=True, unit="% VRef")
     """W12. Point 12 Watts."""
 
-    v13 = uint16(38, scale_register=9, writable=True, unit='% VRef')
+    v13 = uint16(38, scale_register=9, writable=True, unit="% VRef")
     """V13. Point 13 Volts."""
 
-    w13 = int16(39, scale_register=10, writable=True, unit='% VRef')
+    w13 = int16(39, scale_register=10, writable=True, unit="% VRef")
     """W13. Point 13 Watts."""
 
-    v14 = uint16(40, scale_register=9, writable=True, unit='% VRef')
+    v14 = uint16(40, scale_register=9, writable=True, unit="% VRef")
     """V14. Point 14 Volts."""
 
-    w14 = int16(41, scale_register=10, writable=True, unit='% VRef')
+    w14 = int16(41, scale_register=10, writable=True, unit="% VRef")
     """W14. Point 14 Watts."""
 
-    v15 = uint16(42, scale_register=9, writable=True, unit='% VRef')
+    v15 = uint16(42, scale_register=9, writable=True, unit="% VRef")
     """V15. Point 15 Volts."""
 
-    w15 = int16(43, scale_register=10, writable=True, unit='% VRef')
+    w15 = int16(43, scale_register=10, writable=True, unit="% VRef")
     """W15. Point 15 Watts."""
 
-    v16 = uint16(44, scale_register=9, writable=True, unit='% VRef')
+    v16 = uint16(44, scale_register=9, writable=True, unit="% VRef")
     """V16. Point 16 Volts."""
 
-    w16 = int16(45, scale_register=10, writable=True, unit='% VRef')
+    w16 = int16(45, scale_register=10, writable=True, unit="% VRef")
     """W16. Point 16 Watts."""
 
-    v17 = uint16(46, scale_register=9, writable=True, unit='% VRef')
+    v17 = uint16(46, scale_register=9, writable=True, unit="% VRef")
     """V17. Point 17 Volts."""
 
-    w17 = int16(47, scale_register=10, writable=True, unit='% VRef')
+    w17 = int16(47, scale_register=10, writable=True, unit="% VRef")
     """W17. Point 17 Watts."""
 
-    v18 = uint16(48, scale_register=9, writable=True, unit='% VRef')
+    v18 = uint16(48, scale_register=9, writable=True, unit="% VRef")
     """V18. Point 18 Volts."""
 
-    w18 = int16(49, scale_register=10, writable=True, unit='% VRef')
+    w18 = int16(49, scale_register=10, writable=True, unit="% VRef")
     """W18. Point 18 Watts."""
 
-    v19 = uint16(50, scale_register=9, writable=True, unit='% VRef')
+    v19 = uint16(50, scale_register=9, writable=True, unit="% VRef")
     """V19. Point 19 Volts."""
 
-    w19 = int16(51, scale_register=10, writable=True, unit='% VRef')
+    w19 = int16(51, scale_register=10, writable=True, unit="% VRef")
     """W19. Point 19 Watts."""
 
-    v20 = uint16(52, scale_register=9, writable=True, unit='% VRef')
+    v20 = uint16(52, scale_register=9, writable=True, unit="% VRef")
     """V20. Point 20 Volts."""
 
-    w20 = int16(53, scale_register=10, writable=True, unit='% VRef')
+    w20 = int16(53, scale_register=10, writable=True, unit="% VRef")
     """W20. Point 20 Watts."""
 
     crv_nam = string(54, 8, writable=True)
     """CrvNam. Optional description for curve."""
 
-    rmp_pt1_tms = uint16(62, writable=True, unit='Secs')
+    rmp_pt1_tms = uint16(62, writable=True, unit="Secs")
     """RmpPt1Tms. The time of the PT1 in seconds (time to accomplish a change of
     95%)."""
 
-    rmp_dec_tmm = uint16(63, scale_register=11, writable=True, unit='% WMax/min')
+    rmp_dec_tmm = uint16(63, scale_register=11, writable=True, unit="% WMax/min")
     """RmpDecTmm. The maximum rate at which the watt value may be reduced in response
     to changes in the voltage value."""
 
-    rmp_inc_tmm = uint16(64, scale_register=11, writable=True, unit='% WMax/min')
+    rmp_inc_tmm = uint16(64, scale_register=11, writable=True, unit="% WMax/min")
     """RmpIncTmm. The maximum rate at which the watt value may be increased in
     response to changes in the voltage value."""
 
@@ -1269,13 +1269,13 @@ class VoltWatt(SunSpecComponent):
     mod_ena = bitfield16(3, ModEna, writable=True)
     """ModEna. Is Volt-Watt control active."""
 
-    win_tms = uint16(4, writable=True, unit='Secs')
+    win_tms = uint16(4, writable=True, unit="Secs")
     """WinTms. Time window for volt-watt change."""
 
-    rvrt_tms = uint16(5, writable=True, unit='Secs')
+    rvrt_tms = uint16(5, writable=True, unit="Secs")
     """RvrtTms. Timeout period for volt-watt curve selection."""
 
-    rmp_tms = uint16(6, writable=True, unit='Secs')
+    rmp_tms = uint16(6, writable=True, unit="Secs")
     """RmpTms. Ramp time for moving from current mode to new mode."""
 
     n_crv = uint16(7)
@@ -1295,124 +1295,124 @@ class LfrtCurve(Component):
     act_pt = uint16(12, writable=True)
     """ActPt. Number of active points in array."""
 
-    tms1 = uint16(13, scale_register=9, writable=True, unit='Secs')
+    tms1 = uint16(13, scale_register=9, writable=True, unit="Secs")
     """Tms1. Point 1 must disconnect duration."""
 
-    hz1 = uint16(14, scale_register=10, writable=True, unit='Hz')
+    hz1 = uint16(14, scale_register=10, writable=True, unit="Hz")
     """Hz1. Point 1 must disconnect frequency."""
 
-    tms2 = uint16(15, scale_register=9, writable=True, unit='Secs')
+    tms2 = uint16(15, scale_register=9, writable=True, unit="Secs")
     """Tms2. Point 2 must disconnect duration."""
 
-    hz2 = uint16(16, scale_register=10, writable=True, unit='Hz')
+    hz2 = uint16(16, scale_register=10, writable=True, unit="Hz")
     """Hz2. Point 2 must disconnect frequency."""
 
-    tms3 = uint16(17, scale_register=9, writable=True, unit='Secs')
+    tms3 = uint16(17, scale_register=9, writable=True, unit="Secs")
     """Tms3. Point 3 must disconnect duration."""
 
-    hz3 = uint16(18, scale_register=10, writable=True, unit='Hz')
+    hz3 = uint16(18, scale_register=10, writable=True, unit="Hz")
     """Hz3. Point 3 must disconnect frequency."""
 
-    tms4 = uint16(19, scale_register=9, writable=True, unit='Secs')
+    tms4 = uint16(19, scale_register=9, writable=True, unit="Secs")
     """Tms4. Point 4 must disconnect duration."""
 
-    hz4 = uint16(20, scale_register=10, writable=True, unit='Hz')
+    hz4 = uint16(20, scale_register=10, writable=True, unit="Hz")
     """Hz4. Point 4 must disconnect frequency."""
 
-    tms5 = uint16(21, scale_register=9, writable=True, unit='Secs')
+    tms5 = uint16(21, scale_register=9, writable=True, unit="Secs")
     """Tms5. Point 5 must disconnect duration."""
 
-    hz5 = uint16(22, scale_register=10, writable=True, unit='Hz')
+    hz5 = uint16(22, scale_register=10, writable=True, unit="Hz")
     """Hz5. Point 5 must disconnect frequency."""
 
-    tms6 = uint16(23, scale_register=9, writable=True, unit='Secs')
+    tms6 = uint16(23, scale_register=9, writable=True, unit="Secs")
     """Tms6. Point 6 must disconnect duration."""
 
-    hz6 = uint16(24, scale_register=10, writable=True, unit='Hz')
+    hz6 = uint16(24, scale_register=10, writable=True, unit="Hz")
     """Hz6. Point 6 must disconnect frequency."""
 
-    tms7 = uint16(25, scale_register=9, writable=True, unit='Secs')
+    tms7 = uint16(25, scale_register=9, writable=True, unit="Secs")
     """Tms7. Point 7 must disconnect duration."""
 
-    hz7 = uint16(26, scale_register=10, writable=True, unit='Hz')
+    hz7 = uint16(26, scale_register=10, writable=True, unit="Hz")
     """Hz7. Point 7 must disconnect frequency."""
 
-    tms8 = uint16(27, scale_register=9, writable=True, unit='Secs')
+    tms8 = uint16(27, scale_register=9, writable=True, unit="Secs")
     """Tms8. Point 8 must disconnect duration."""
 
-    hz8 = uint16(28, scale_register=10, writable=True, unit='Hz')
+    hz8 = uint16(28, scale_register=10, writable=True, unit="Hz")
     """Hz8. Point 8 must disconnect frequency."""
 
-    tms9 = uint16(29, scale_register=9, writable=True, unit='Secs')
+    tms9 = uint16(29, scale_register=9, writable=True, unit="Secs")
     """Tms9. Point 9 must disconnect duration."""
 
-    hz9 = uint16(30, scale_register=10, writable=True, unit='Hz')
+    hz9 = uint16(30, scale_register=10, writable=True, unit="Hz")
     """Hz9. Point 9 must disconnect frequency."""
 
-    tms10 = uint16(31, scale_register=9, writable=True, unit='Secs')
+    tms10 = uint16(31, scale_register=9, writable=True, unit="Secs")
     """Tms10. Point 10 must disconnect duration."""
 
-    hz10 = uint16(32, scale_register=10, writable=True, unit='Hz')
+    hz10 = uint16(32, scale_register=10, writable=True, unit="Hz")
     """Hz10. Point 10 must disconnect frequency."""
 
-    tms11 = uint16(33, scale_register=9, writable=True, unit='Secs')
+    tms11 = uint16(33, scale_register=9, writable=True, unit="Secs")
     """Tms11. Point 11 must disconnect duration."""
 
-    hz11 = uint16(34, scale_register=10, writable=True, unit='Hz')
+    hz11 = uint16(34, scale_register=10, writable=True, unit="Hz")
     """Hz11. Point 11 must disconnect frequency."""
 
-    tms12 = uint16(35, scale_register=9, writable=True, unit='Secs')
+    tms12 = uint16(35, scale_register=9, writable=True, unit="Secs")
     """Tms12. Point 12 must disconnect duration."""
 
-    hz12 = uint16(36, scale_register=10, writable=True, unit='Hz')
+    hz12 = uint16(36, scale_register=10, writable=True, unit="Hz")
     """Hz12. Point 12 must disconnect frequency."""
 
-    tms13 = uint16(37, scale_register=9, writable=True, unit='Secs')
+    tms13 = uint16(37, scale_register=9, writable=True, unit="Secs")
     """Tms13. Point 13 must disconnect duration."""
 
-    hz13 = uint16(38, scale_register=10, writable=True, unit='Hz')
+    hz13 = uint16(38, scale_register=10, writable=True, unit="Hz")
     """Hz13. Point 13 must disconnect frequency."""
 
-    tms14 = uint16(39, scale_register=9, writable=True, unit='Secs')
+    tms14 = uint16(39, scale_register=9, writable=True, unit="Secs")
     """Tms14. Point 14 must disconnect duration."""
 
-    hz14 = uint16(40, scale_register=10, writable=True, unit='Hz')
+    hz14 = uint16(40, scale_register=10, writable=True, unit="Hz")
     """Hz14. Point 14 must disconnect frequency."""
 
-    tms15 = uint16(41, scale_register=9, writable=True, unit='Secs')
+    tms15 = uint16(41, scale_register=9, writable=True, unit="Secs")
     """Tms15. Point 15 must disconnect duration."""
 
-    hz15 = uint16(42, scale_register=10, writable=True, unit='Hz')
+    hz15 = uint16(42, scale_register=10, writable=True, unit="Hz")
     """Hz15. Point 15 must disconnect frequency."""
 
-    tms16 = uint16(43, scale_register=9, writable=True, unit='Secs')
+    tms16 = uint16(43, scale_register=9, writable=True, unit="Secs")
     """Tms16. Point 16 must disconnect duration."""
 
-    hz16 = uint16(44, scale_register=10, writable=True, unit='Hz')
+    hz16 = uint16(44, scale_register=10, writable=True, unit="Hz")
     """Hz16. Point 16 must disconnect frequency."""
 
-    tms17 = uint16(45, scale_register=9, writable=True, unit='Secs')
+    tms17 = uint16(45, scale_register=9, writable=True, unit="Secs")
     """Tms17. Point 17 must disconnect duration."""
 
-    hz17 = uint16(46, scale_register=10, writable=True, unit='Hz')
+    hz17 = uint16(46, scale_register=10, writable=True, unit="Hz")
     """Hz17. Point 17 must disconnect frequency."""
 
-    tms18 = uint16(47, scale_register=9, writable=True, unit='Secs')
+    tms18 = uint16(47, scale_register=9, writable=True, unit="Secs")
     """Tms18. Point 18 must disconnect duration."""
 
-    hz18 = uint16(48, scale_register=10, writable=True, unit='Hz')
+    hz18 = uint16(48, scale_register=10, writable=True, unit="Hz")
     """Hz18. Point 18 must disconnect frequency."""
 
-    tms19 = uint16(49, scale_register=9, writable=True, unit='Secs')
+    tms19 = uint16(49, scale_register=9, writable=True, unit="Secs")
     """Tms19. Point 19 must disconnect duration."""
 
-    hz19 = uint16(50, scale_register=10, writable=True, unit='Hz')
+    hz19 = uint16(50, scale_register=10, writable=True, unit="Hz")
     """Hz19. Point 19 must disconnect frequency."""
 
-    tms20 = uint16(51, scale_register=9, writable=True, unit='Secs')
+    tms20 = uint16(51, scale_register=9, writable=True, unit="Secs")
     """Tms20. Point 20 must disconnect duration."""
 
-    hz20 = uint16(52, scale_register=10, writable=True, unit='Hz')
+    hz20 = uint16(52, scale_register=10, writable=True, unit="Hz")
     """Hz20. Point 20 must disconnect frequency."""
 
     crv_nam = string(53, 8, writable=True)
@@ -1431,13 +1431,13 @@ class Lfrt(SunSpecComponent):
     mod_ena = bitfield16(3, ModEna, writable=True)
     """ModEna. LHzRT control mode. Enable active curve."""
 
-    win_tms = uint16(4, writable=True, unit='Secs')
+    win_tms = uint16(4, writable=True, unit="Secs")
     """WinTms. Time window for LFRT change."""
 
-    rvrt_tms = uint16(5, writable=True, unit='Secs')
+    rvrt_tms = uint16(5, writable=True, unit="Secs")
     """RvrtTms. Timeout period for LFRT curve selection."""
 
-    rmp_tms = uint16(6, writable=True, unit='Secs')
+    rmp_tms = uint16(6, writable=True, unit="Secs")
     """RmpTms. Ramp time for moving from current mode to new mode."""
 
     n_crv = uint16(7)
@@ -1457,124 +1457,124 @@ class HfrtCurve(Component):
     act_pt = uint16(12, writable=True)
     """ActPt. Number of active points in array."""
 
-    tms1 = uint16(13, scale_register=9, writable=True, unit='Secs')
+    tms1 = uint16(13, scale_register=9, writable=True, unit="Secs")
     """Tms1. Point 1 must disconnect duration."""
 
-    hz1 = uint16(14, scale_register=10, writable=True, unit='Hz')
+    hz1 = uint16(14, scale_register=10, writable=True, unit="Hz")
     """Hz1. Point 1 must disconnect frequency."""
 
-    tms2 = uint16(15, scale_register=9, writable=True, unit='Secs')
+    tms2 = uint16(15, scale_register=9, writable=True, unit="Secs")
     """Tms2. Point 2 must disconnect duration."""
 
-    hz2 = uint16(16, scale_register=10, writable=True, unit='Hz')
+    hz2 = uint16(16, scale_register=10, writable=True, unit="Hz")
     """Hz2. Point 2 must disconnect frequency."""
 
-    tms3 = uint16(17, scale_register=9, writable=True, unit='Secs')
+    tms3 = uint16(17, scale_register=9, writable=True, unit="Secs")
     """Tms3. Point 3 must disconnect duration."""
 
-    hz3 = uint16(18, scale_register=10, writable=True, unit='Hz')
+    hz3 = uint16(18, scale_register=10, writable=True, unit="Hz")
     """Hz3. Point 3 must disconnect frequency."""
 
-    tms4 = uint16(19, scale_register=9, writable=True, unit='Secs')
+    tms4 = uint16(19, scale_register=9, writable=True, unit="Secs")
     """Tms4. Point 4 must disconnect duration."""
 
-    hz4 = uint16(20, scale_register=10, writable=True, unit='Hz')
+    hz4 = uint16(20, scale_register=10, writable=True, unit="Hz")
     """Hz4. Point 4 must disconnect frequency."""
 
-    tms5 = uint16(21, scale_register=9, writable=True, unit='Secs')
+    tms5 = uint16(21, scale_register=9, writable=True, unit="Secs")
     """Tms5. Point 5 must disconnect duration."""
 
-    hz5 = uint16(22, scale_register=10, writable=True, unit='Hz')
+    hz5 = uint16(22, scale_register=10, writable=True, unit="Hz")
     """Hz5. Point 5 must disconnect frequency."""
 
-    tms6 = uint16(23, scale_register=9, writable=True, unit='Secs')
+    tms6 = uint16(23, scale_register=9, writable=True, unit="Secs")
     """Tms6. Point 6 must disconnect duration."""
 
-    hz6 = uint16(24, scale_register=10, writable=True, unit='Hz')
+    hz6 = uint16(24, scale_register=10, writable=True, unit="Hz")
     """Hz6. Point 6 must disconnect frequency."""
 
-    tms7 = uint16(25, scale_register=9, writable=True, unit='Secs')
+    tms7 = uint16(25, scale_register=9, writable=True, unit="Secs")
     """Tms7. Point 7 must disconnect duration."""
 
-    hz7 = uint16(26, scale_register=10, writable=True, unit='Hz')
+    hz7 = uint16(26, scale_register=10, writable=True, unit="Hz")
     """Hz7. Point 7 must disconnect frequency."""
 
-    tms8 = uint16(27, scale_register=9, writable=True, unit='Secs')
+    tms8 = uint16(27, scale_register=9, writable=True, unit="Secs")
     """Tms8. Point 8 must disconnect duration."""
 
-    hz8 = uint16(28, scale_register=10, writable=True, unit='Hz')
+    hz8 = uint16(28, scale_register=10, writable=True, unit="Hz")
     """Hz8. Point 8 must disconnect frequency."""
 
-    tms9 = uint16(29, scale_register=9, writable=True, unit='Secs')
+    tms9 = uint16(29, scale_register=9, writable=True, unit="Secs")
     """Tms9. Point 9 must disconnect duration."""
 
-    hz9 = uint16(30, scale_register=10, writable=True, unit='Hz')
+    hz9 = uint16(30, scale_register=10, writable=True, unit="Hz")
     """Hz9. Point 9 must disconnect frequency."""
 
-    tms10 = uint16(31, scale_register=9, writable=True, unit='Secs')
+    tms10 = uint16(31, scale_register=9, writable=True, unit="Secs")
     """Tms10. Point 10 must disconnect duration."""
 
-    hz10 = uint16(32, scale_register=10, writable=True, unit='Hz')
+    hz10 = uint16(32, scale_register=10, writable=True, unit="Hz")
     """Hz10. Point 10 must disconnect frequency."""
 
-    tms11 = uint16(33, scale_register=9, writable=True, unit='Secs')
+    tms11 = uint16(33, scale_register=9, writable=True, unit="Secs")
     """Tms11. Point 11 must disconnect duration."""
 
-    hz11 = uint16(34, scale_register=10, writable=True, unit='Hz')
+    hz11 = uint16(34, scale_register=10, writable=True, unit="Hz")
     """Hz11. Point 11 must disconnect frequency."""
 
-    tms12 = uint16(35, scale_register=9, writable=True, unit='Secs')
+    tms12 = uint16(35, scale_register=9, writable=True, unit="Secs")
     """Tms12. Point 12 must disconnect duration."""
 
-    hz12 = uint16(36, scale_register=10, writable=True, unit='Hz')
+    hz12 = uint16(36, scale_register=10, writable=True, unit="Hz")
     """Hz12. Point 12 must disconnect frequency."""
 
-    tms13 = uint16(37, scale_register=9, writable=True, unit='Secs')
+    tms13 = uint16(37, scale_register=9, writable=True, unit="Secs")
     """Tms13. Point 13 must disconnect duration."""
 
-    hz13 = uint16(38, scale_register=10, writable=True, unit='Hz')
+    hz13 = uint16(38, scale_register=10, writable=True, unit="Hz")
     """Hz13. Point 13 must disconnect frequency."""
 
-    tms14 = uint16(39, scale_register=9, writable=True, unit='Secs')
+    tms14 = uint16(39, scale_register=9, writable=True, unit="Secs")
     """Tms14. Point 14 must disconnect duration."""
 
-    hz14 = uint16(40, scale_register=10, writable=True, unit='Hz')
+    hz14 = uint16(40, scale_register=10, writable=True, unit="Hz")
     """Hz14. Point 14 must disconnect frequency."""
 
-    tms15 = uint16(41, scale_register=9, writable=True, unit='Secs')
+    tms15 = uint16(41, scale_register=9, writable=True, unit="Secs")
     """Tms15. Point 15 must disconnect duration."""
 
-    hz15 = uint16(42, scale_register=10, writable=True, unit='Hz')
+    hz15 = uint16(42, scale_register=10, writable=True, unit="Hz")
     """Hz15. Point 15 must disconnect frequency."""
 
-    tms16 = uint16(43, scale_register=9, writable=True, unit='Secs')
+    tms16 = uint16(43, scale_register=9, writable=True, unit="Secs")
     """Tms16. Point 16 must disconnect duration."""
 
-    hz16 = uint16(44, scale_register=10, writable=True, unit='Hz')
+    hz16 = uint16(44, scale_register=10, writable=True, unit="Hz")
     """Hz16. Point 16 must disconnect frequency."""
 
-    tms17 = uint16(45, scale_register=9, writable=True, unit='Secs')
+    tms17 = uint16(45, scale_register=9, writable=True, unit="Secs")
     """Tms17. Point 17 must disconnect duration."""
 
-    hz17 = uint16(46, scale_register=10, writable=True, unit='Hz')
+    hz17 = uint16(46, scale_register=10, writable=True, unit="Hz")
     """Hz17. Point 17 must disconnect frequency."""
 
-    tms18 = uint16(47, scale_register=9, writable=True, unit='Secs')
+    tms18 = uint16(47, scale_register=9, writable=True, unit="Secs")
     """Tms18. Point 18 must disconnect duration."""
 
-    hz18 = uint16(48, scale_register=10, writable=True, unit='Hz')
+    hz18 = uint16(48, scale_register=10, writable=True, unit="Hz")
     """Hz18. Point 18 must disconnect frequency."""
 
-    tms19 = uint16(49, scale_register=9, writable=True, unit='Secs')
+    tms19 = uint16(49, scale_register=9, writable=True, unit="Secs")
     """Tms19. Point 19 must disconnect duration."""
 
-    hz19 = uint16(50, scale_register=10, writable=True, unit='Hz')
+    hz19 = uint16(50, scale_register=10, writable=True, unit="Hz")
     """Hz19. Point 19 must disconnect frequency."""
 
-    tms20 = uint16(51, scale_register=9, writable=True, unit='Secs')
+    tms20 = uint16(51, scale_register=9, writable=True, unit="Secs")
     """Tms20. Point 20 must disconnect duration."""
 
-    hz20 = uint16(52, scale_register=10, writable=True, unit='Hz')
+    hz20 = uint16(52, scale_register=10, writable=True, unit="Hz")
     """Hz20. Point 20 must disconnect frequency."""
 
     crv_nam = string(53, 8, writable=True)
@@ -1593,13 +1593,13 @@ class Hfrt(SunSpecComponent):
     mod_ena = bitfield16(3, ModEna, writable=True)
     """ModEna. HFRT control mode. Enable active curve."""
 
-    win_tms = uint16(4, writable=True, unit='Secs')
+    win_tms = uint16(4, writable=True, unit="Secs")
     """WinTms. Time window for HFRT change."""
 
-    rvrt_tms = uint16(5, writable=True, unit='Secs')
+    rvrt_tms = uint16(5, writable=True, unit="Secs")
     """RvrtTms. Timeout period for HFRT curve selection."""
 
-    rmp_tms = uint16(6, writable=True, unit='Secs')
+    rmp_tms = uint16(6, writable=True, unit="Secs")
     """RmpTms. Ramp time for moving from current mode to new mode."""
 
     n_crv = uint16(7)
@@ -1622,22 +1622,22 @@ class MpptModule(Component):
     id_str = string(11, 8)
     """Input ID String."""
 
-    dca = uint16(19, scale_register=2, unit='A')
+    dca = uint16(19, scale_register=2, unit="A")
     """DC Current."""
 
-    dcv = uint16(20, scale_register=3, unit='V')
+    dcv = uint16(20, scale_register=3, unit="V")
     """DC Voltage."""
 
-    dcw = uint16(21, scale_register=4, unit='W')
+    dcw = uint16(21, scale_register=4, unit="W")
     """DC Power."""
 
-    dcwh = acc32(22, scale_register=5, unit='Wh')
+    dcwh = acc32(22, scale_register=5, unit="Wh")
     """Lifetime Energy."""
 
-    tms = uint32(24, unit='Secs')
+    tms = uint32(24, unit="Secs")
     """Timestamp."""
 
-    tmp = int16(26, unit='C')
+    tmp = int16(26, unit="C")
     """Temperature."""
 
     dc_st = enum16(27, MpptModuleOperatingState)

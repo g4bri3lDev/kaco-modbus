@@ -59,9 +59,7 @@ async def test_binds_curves_without_polling_them(inverter: KacoInverter) -> None
 
 async def test_probes_base_addresses_in_order(inverter_unit: MockModbusUnit) -> None:
     """A device whose map is not at 40000 is still found."""
-    shifted = {
-        address - BASE_ADDRESS: value for address, value in BLUEPLANET_86TL3.items()
-    }
+    shifted = {address - BASE_ADDRESS: value for address, value in BLUEPLANET_86TL3.items()}
     inverter_unit.load_raw({"holding": shifted})
     # Reading 40000 must now fail the way a real device fails an unmapped read.
     for address in range(BASE_ADDRESS, BASE_ADDRESS + 2):

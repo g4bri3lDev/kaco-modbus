@@ -59,6 +59,7 @@ _LOGGER = logging.getLogger(__name__)
 # "this inverter does not have it".
 _ABSENT = (IllegalDataAddressError, IllegalFunctionError)
 
+
 @dataclass
 class UpdateReport:
     """What one poll managed to refresh."""
@@ -173,9 +174,7 @@ class KacoInverter:
 
         self.inverter = self._bind(InverterThreePhase, INVERTER_MODEL_ID)
         if self.inverter is None:
-            raise ModelMissingError(
-                f"device exposes no SunSpec inverter model {INVERTER_MODEL_ID}"
-            )
+            raise ModelMissingError(f"device exposes no SunSpec inverter model {INVERTER_MODEL_ID}")
 
         self.status = self._bind(Status, 122)
         self.nameplate = self._bind(Nameplate, 120)
@@ -350,9 +349,7 @@ class KacoInverter:
         controls = self._require_controls()
         await controls.write("w_max_lim_pct", percent)
         self.setpoints_held = await self._async_hold("w_max_lim_pct_rvrt_tms")
-        await controls.write(
-            "w_max_lim_ena", WMaxLimEna.ENABLED if enable else WMaxLimEna.DISABLED
-        )
+        await controls.write("w_max_lim_ena", WMaxLimEna.ENABLED if enable else WMaxLimEna.DISABLED)
         await controls.async_update()
 
     async def async_clear_power_limit(self) -> None:
@@ -397,9 +394,7 @@ class KacoInverter:
         await controls.write("v_ar_pct_mod", mode)
         await controls.write(field, percent)
         await self._async_hold("v_ar_pct_rvrt_tms")
-        await controls.write(
-            "v_ar_pct_ena", VArPctEna.ENABLED if enable else VArPctEna.DISABLED
-        )
+        await controls.write("v_ar_pct_ena", VArPctEna.ENABLED if enable else VArPctEna.DISABLED)
         await controls.async_update()
 
     async def async_clear_reactive_power(self) -> None:

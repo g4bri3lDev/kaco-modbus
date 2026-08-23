@@ -92,9 +92,7 @@ async def test_setting_a_limit_without_enabling_it(inverter: KacoInverter) -> No
 
 
 @pytest.mark.parametrize("percent", [-1.0, 100.1, 1000.0])
-async def test_a_limit_outside_the_range_is_refused(
-    inverter: KacoInverter, percent: float
-) -> None:
+async def test_a_limit_outside_the_range_is_refused(inverter: KacoInverter, percent: float) -> None:
     """Caught before it reaches the wire."""
     with pytest.raises(ValueError, match="between 0 and 100"):
         await inverter.async_set_power_limit(percent)
@@ -103,9 +101,7 @@ async def test_a_limit_outside_the_range_is_refused(
 class TestRevertTimer:
     """This hardware reverts a setpoint after 300 s unless the timer is cleared."""
 
-    async def test_the_device_reports_its_revert_window(
-        self, inverter: KacoInverter
-    ) -> None:
+    async def test_the_device_reports_its_revert_window(self, inverter: KacoInverter) -> None:
         assert inverter.revert_seconds == 300
 
     async def test_a_write_tries_to_clear_the_timer(self, inverter: KacoInverter) -> None:
@@ -123,9 +119,7 @@ class TestRevertTimer:
         """Some firmware pins the revert timer. That is not an error — but the
         caller has to know, because it now must rewrite within the window.
         """
-        inverter_unit.fail_write(
-            address_of(inverter, REVERT_TIMER), IllegalDataValueError()
-        )
+        inverter_unit.fail_write(address_of(inverter, REVERT_TIMER), IllegalDataValueError())
 
         await inverter.async_set_power_limit(50.0)
 
@@ -155,9 +149,7 @@ class TestOtherControls:
         assert inverter.controls is not None
         assert inverter.controls.out_pf_set_ena is OutPFSetEna.DISABLED
 
-    async def test_reactive_power_defaults_to_percent_of_wmax(
-        self, inverter: KacoInverter
-    ) -> None:
+    async def test_reactive_power_defaults_to_percent_of_wmax(self, inverter: KacoInverter) -> None:
         await inverter.async_set_reactive_power(20.0)
         assert inverter.controls is not None
         assert inverter.controls.v_ar_pct_mod is VArPctMod.WMax

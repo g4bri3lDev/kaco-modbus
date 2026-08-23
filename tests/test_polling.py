@@ -25,8 +25,15 @@ def break_model(
 
 async def test_a_clean_poll_reports_everything(inverter: KacoInverter) -> None:
     report = await inverter.async_update()
-    assert report.updated == ["inverter", "mppt", "status", "nameplate", "settings",
-                              "controls", "volt_var"]
+    assert report.updated == [
+        "inverter",
+        "mppt",
+        "status",
+        "nameplate",
+        "settings",
+        "controls",
+        "volt_var",
+    ]
     assert report.failed == {}
 
 

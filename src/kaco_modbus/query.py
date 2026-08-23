@@ -78,8 +78,10 @@ async def _run(host: str, port: int, unit_id: int, raw: bool) -> int:
                 _show(string, indent="    ")
 
         if device.controls is not None:
-            held = "held indefinitely" if device.revert_seconds is None else (
-                f"reverts after {device.revert_seconds} s unless rewritten"
+            held = (
+                "held indefinitely"
+                if device.revert_seconds is None
+                else (f"reverts after {device.revert_seconds} s unless rewritten")
             )
             print(f"\nsetpoints: {held}")
 
