@@ -13,9 +13,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # The lower bound is what pyproject requires; the upper is what the
-        # tests actually run on locally.
-        python-version: ["3.12", "3.13"]
+        # 3.12 is the floor pyproject declares, so it has to keep working;
+        # 3.14 is what Home Assistant requires (>=3.14.2) and what this is
+        # developed on, so it is the version that actually matters.
+        python-version: ["3.12", "3.13", "3.14"]
     steps:
       - uses: actions/checkout@v4
 
