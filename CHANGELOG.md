@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/g4bri3lDev/kaco-modbus/compare/v1.0.0...v1.0.1) (2026-08-23)
+
+
+### Bug fixes
+
+* withhold readings the inverter parks at zero while asleep ([4d162e3](https://github.com/g4bri3lDev/kaco-modbus/commit/4d162e3434261ffb6b849bda0520234312f13e27))
+
 ## [1.0.0](https://github.com/g4bri3lDev/kaco-modbus/compare/v0.1.0...v1.0.0) (2026-08-23)
 
 
