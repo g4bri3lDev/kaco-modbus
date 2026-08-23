@@ -42,7 +42,7 @@ async def main() -> None:
         await inverter.async_update()
 
         print(inverter.info.model, inverter.info.serial_number)
-        print(inverter.inverter.w, "W")           # AC power, scale factor applied
+        print(inverter.inverter.w, "W")  # AC power, scale factor applied
         for string in inverter.strings:
             print(string.id_str, string.dcw, "W")  # per MPPT string
     finally:
@@ -106,7 +106,7 @@ SunSpec name, with `—` for the ones this firmware does not implement.
 Writes are limited to SunSpec model 123 (immediate controls):
 
 ```python
-await inverter.async_set_power_limit(50.0)   # curtail to 50 %
+await inverter.async_set_power_limit(50.0)  # curtail to 50 %
 await inverter.async_clear_power_limit()
 ```
 
