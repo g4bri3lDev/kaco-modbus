@@ -12,3 +12,6 @@ htmlcov/
 .ruff_cache/
 .DS_Store
 .idea/
+
+# Reference material, not part of the package.
+modbus_discord.txt

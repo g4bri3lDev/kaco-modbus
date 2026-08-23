@@ -21,7 +21,9 @@ async def test_discovers_the_real_device(inverter: KacoInverter) -> None:
     assert inverter.info is not None
     assert inverter.info.manufacturer == "KACO new energy"
     assert inverter.info.model == "blueplanet 8.6 TL3 INT"
-    assert inverter.info.serial_number == "8.6TL01736586"
+    # Anonymised in the fixture: a real serial identifies someone's hardware,
+    # and this library is published. See testing.py.
+    assert inverter.info.serial_number == "8.6TL00000000"
     assert inverter.info.firmware == "V5.53"
 
 

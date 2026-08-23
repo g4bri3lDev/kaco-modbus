@@ -33,3 +33,17 @@ SETTINGS = ("nameplate", "settings", "controls", "volt_var")
 # The vendor block this firmware advertises. There is no public definition for
 # it, so it is reported as raw registers and never decoded.
 VENDOR_MODEL_ID = 64204
+
+# States in which the inverter is converting power, and so is actually
+# measuring the grid and its own temperature.
+#
+# Outside them it stays on Modbus and answers normally, but parks those
+# registers at zero rather than at the "not implemented" sentinel — so at
+# night it reports 0.0 Hz and 0.0 V for a grid that is plainly still live,
+# and 0.0 degC for a cabinet that is not at freezing. Readings that are only
+# meaningful while running are withheld outside these states; see
+# :meth:`KacoInverter.frequency` and friends.
+#
+# Power, current and energy are *not* treated this way: zero really is the
+# right answer for those when nothing is being produced.
+RUNNING_STATES = frozenset({3, 4, 5})  # STARTING, MPPT, THROTTLED

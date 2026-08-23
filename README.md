@@ -84,7 +84,7 @@ vocabulary: the operating state reads *"Producing power"*, not `MPPT`.
 │                                                                     │
 │    Generated all-time    Conversion efficiency     Temperature      │
 │        12.19 MWh                 98.0%                46 °C         │
-╰──────────────── 8.6TL01736586 · firmware V5.53 ─────────────────────╯
+╰──────────────── 8.6TL00000000 · firmware V5.53 ─────────────────────╯
 ```
 
 It withholds numbers it cannot stand behind. Conversion efficiency is blank below
@@ -100,6 +100,27 @@ kaco-query 192.168.0.155 --raw     # plus an undecoded register dump
 
 Prints the discovered SunSpec model chain and every decoded field under its real
 SunSpec name, with `—` for the ones this firmware does not implement.
+
+## At night
+
+A KACO stays on Modbus after dark rather than going silent, but parks the readings it
+is no longer taking at zero — reporting 0 Hz and 0 V for a grid that is plainly still
+live. The device object withholds those rather than passing them on:
+
+```python
+inverter.is_running        # False while asleep
+inverter.frequency         # None unless running
+inverter.phase_voltages    # (None, None, None) unless running
+inverter.temperature       # None unless running
+inverter.power_factor      # None unless running
+```
+
+Power, current and energy are *not* withheld — zero is genuinely correct for those.
+See [`docs/quirks.md`](docs/quirks.md).
+
+> [!NOTE]
+> The inverter accepts only **one Modbus client at a time**, so the CLIs cannot be used
+> while Home Assistant is polling it.
 
 ## Control
 

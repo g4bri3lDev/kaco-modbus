@@ -56,6 +56,46 @@ extra model IDs and turn `INVERTER_MODEL_ID` back into a preference ordering.
 
 ## Behaviour
 
+### At night it lies rather than going quiet
+
+Most inverters stop answering Modbus after dark — SolarEdge and Sofar both do, so
+integrations for them simply go unavailable. **A KACO does not.** It stays connected and
+answers normally in the `SLEEPING` state, but parks the registers it is no longer
+measuring at **zero**, not at the "not implemented" sentinel. Captured from the hardware
+on a warm August night:
+
+| Reading | Asleep | Truth |
+|---|---|---|
+| `hz` | `0.0 Hz` | the grid is still live at ~50 Hz |
+| `ph_vph_a/b/c` | `0.0 V` | the mains is still at ~230 V |
+| `tmp_cab` | `0.0 °C` | it was 46.9 °C that afternoon |
+| `tmp` (per string) | `0` | — |
+| `pf` | `1.00` | undefined with no current flowing |
+
+Left alone these look plausible, so they would show a grid outage every night and drag
+statistics down with zeros. `KacoInverter` therefore withholds them —
+:attr:`frequency`, :attr:`phase_voltages`, :attr:`temperature`, :attr:`power_factor`
+and :meth:`string_temperature` return `None` unless :attr:`is_running`.
+
+The gate is the **operating state**, not the value, so a genuine 0 °C in winter is still
+reported honestly.
+
+What is *not* withheld: power, current and energy. Zero really is the right answer for
+those, and `wh` keeps counting.
+
+### Model 160 raises CABINET_OPEN every night
+
+`mppt.evt` reads `32` (`GlobalEvents.CABINET_OPEN`) whenever the inverter is asleep, and
+`0` while producing. The cabinet is not open. Do not surface model 160's event bitfield
+as an alarm.
+
+### Only one Modbus client at a time
+
+The inverter accepts a **single concurrent TCP connection**. A second one is met with
+`Connection reset by peer`, so `kaco-query` and `kaco-status` cannot be used while Home
+Assistant is polling — stop the integration first, or read through its diagnostics
+download instead.
+
 ### The unit ID is ignored
 
 The inverter answers identically on unit IDs 1, 3, 126 and 247 — it is TCP-native and

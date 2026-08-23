@@ -17,6 +17,7 @@ from modbus_connection.model.sunspec import SunSpecError, scan
 from .const import (
     INVERTER_MODEL_ID,
     READINGS,
+    RUNNING_STATES,
     SETTINGS,
     SUNSPEC_BASE_ADDRESSES,
 )
@@ -229,6 +230,77 @@ class KacoInverter:
         if self.mppt is None:
             return ()
         return self.mppt.module
+
+    # ------------------------------------------------------------------
+    # Readings that are only meaningful while the inverter is running
+    # ------------------------------------------------------------------
+
+    @property
+    def is_running(self) -> bool:
+        """Whether the inverter is converting power right now.
+
+        While it is not, it keeps answering Modbus but stops measuring the
+        grid and its own temperature. See :data:`RUNNING_STATES`.
+        """
+        if self.inverter is None:
+            return False
+        state = self.inverter.st
+        return state is not None and int(state) in RUNNING_STATES
+
+    def _measured(self, value: float | None) -> float | None:
+        """Pass *value* through only while the inverter is actually measuring.
+
+        The registers below are parked at zero when it is not, so returning
+        the raw reading would claim a dead grid and a freezing cabinet.
+        """
+        return value if self.is_running else None
+
+    @property
+    def frequency(self) -> float | None:
+        """Grid frequency in Hz, or None when not being measured.
+
+        Reported as 0.0 while asleep, which would look like the grid is gone.
+        """
+        return self._measured(self.inverter.hz if self.inverter else None)
+
+    @property
+    def phase_voltages(self) -> tuple[float | None, float | None, float | None]:
+        """Phase-to-neutral voltages, or None each when not being measured.
+
+        Reported as 0.0 while asleep, though the mains is plainly still live.
+        """
+        if self.inverter is None:
+            return (None, None, None)
+        return (
+            self._measured(self.inverter.ph_vph_a),
+            self._measured(self.inverter.ph_vph_b),
+            self._measured(self.inverter.ph_vph_c),
+        )
+
+    @property
+    def power_factor(self) -> float | None:
+        """Power factor, or None when not being measured.
+
+        Parked at 1.00 while asleep rather than zeroed, which is just as
+        misleading: with no current flowing the ratio is undefined.
+        """
+        return self._measured(self.inverter.pf if self.inverter else None)
+
+    @property
+    def temperature(self) -> float | None:
+        """Cabinet temperature in degC, or None when not being measured.
+
+        Reported as 0.0 while asleep. Gating on the operating state rather
+        than on the value keeps a genuine 0 degC in winter honest.
+        """
+        return self._measured(self.inverter.tmp_cab if self.inverter else None)
+
+    def string_temperature(self, index: int) -> float | None:
+        """Temperature of one MPPT string, or None when not being measured."""
+        strings = self.strings
+        if index >= len(strings):
+            return None
+        return self._measured(strings[index].tmp)
 
     async def _async_poll(self, names: Iterable[str], report: UpdateReport) -> UpdateReport:
         """Read each named component on its own, recording what happened.

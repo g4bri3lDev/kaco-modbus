@@ -172,22 +172,23 @@ def _render(device: KacoInverter, failed: dict[str, ModbusError]) -> RenderableT
 
     nominal_v = device.settings.v_ref if device.settings else None
     nominal_v = nominal_v if nominal_v else 230.0
-    nominal_hz = 50.0 if (ac.hz is None or 45 < ac.hz < 55) else 60.0
+    nominal_hz = 50.0 if (device.frequency is None or 45 < device.frequency < 55) else 60.0
 
     grid = Table(box=None, show_header=False, padding=(0, 2))
     grid.add_column()
     grid.add_column(justify="right")
     grid.add_column()
-    phases = (("Phase 1", ac.ph_vph_a), ("Phase 2", ac.ph_vph_b), ("Phase 3", ac.ph_vph_c))
+    phases = tuple((f"Phase {i}", v) for i, v in enumerate(device.phase_voltages, start=1))
     for name, volts in phases:
         verdict, colour = judge(volts, nominal_v, _VOLTAGE_TOLERANCE)
         reading = f"{volts:.1f} V" if volts is not None else "—"
         grid.add_row(name, reading, f"[{colour}]{verdict}[/]")
-    verdict, colour = judge(ac.hz, nominal_hz, _FREQUENCY_TOLERANCE)
-    reading = f"{ac.hz:.2f} Hz" if ac.hz is not None else "—"
+    frequency = device.frequency
+    verdict, colour = judge(frequency, nominal_hz, _FREQUENCY_TOLERANCE)
+    reading = f"{frequency:.2f} Hz" if frequency is not None else "—"
     grid.add_row("Frequency", reading, f"[{colour}]{verdict}[/]")
-    if ac.pf is not None:
-        grid.add_row("Power factor", f"{ac.pf:.2f}", "[dim]ideal is 1.00[/dim]")
+    if (power_factor := device.power_factor) is not None:
+        grid.add_row("Power factor", f"{power_factor:.2f}", "[dim]ideal is 1.00[/dim]")
 
     columns = Columns(
         [
@@ -211,7 +212,11 @@ def _render(device: KacoInverter, failed: dict[str, ModbusError]) -> RenderableT
         ),
         Text.assemble(
             ("Temperature\n", "dim"),
-            (f"{ac.tmp_cab:.0f} °C" if ac.tmp_cab is not None else "—", "bold"),
+            (
+                f"{device.temperature:.0f} °C"
+                if device.temperature is not None
+                else "not while asleep"
+            ),
         ),
     )
 
