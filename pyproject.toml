@@ -24,11 +24,17 @@ dynamic = ["version"]
 # No backend extra on purpose: this library only ever receives a ModbusUnit,
 # so the caller picks tmodbus or pymodbus. Pinning one here would force that
 # choice on every consumer and defeat the point of the abstraction.
+#
+# The floor stays as low as the code actually needs. Home Assistant pins
+# modbus-connection exactly (==4.9.0 as of core dev) and installs every
+# integration into one environment, so a floor above core's pin would make
+# the Home Assistant integration uninstallable. Raise it only for API this
+# library genuinely uses.
 dependencies = ["modbus-connection>=4.8.1,<5"]
 
 [project.optional-dependencies]
 # Only the CLIs need to open a connection of their own, or to render anything.
-cli = ["modbus-connection[tmodbus]>=4.8.1,<5", "rich>=13.7"]
+cli = ["modbus-connection[tmodbus]>=4.10.0,<5", "rich>=13.7"]
 
 [project.urls]
 Homepage = "https://github.com/g4bri3lDev/kaco-modbus"
@@ -46,7 +52,7 @@ packages = ["src/kaco_modbus"]
 
 [dependency-groups]
 dev = [
-    "modbus-connection[tmodbus]>=4.8.1,<5",
+    "modbus-connection[tmodbus]>=4.10.0,<5",
     "rich>=13.7",
     "mypy>=1.13",
     "pytest>=8.3",
