@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.0](https://github.com/g4bri3lDev/kaco-modbus/compare/v1.0.1...v1.1.0) (2026-08-29)
+
+
+### Features
+
+* reject devices that are not KACO inverters ([5eea843](https://github.com/g4bri3lDev/kaco-modbus/commit/5eea843e8fd8ba6ebba2f417f2adda196e04c18f))
+
+
+### Documentation
+
+* add AGENTS.md ([3e38137](https://github.com/g4bri3lDev/kaco-modbus/commit/3e38137ae3459446c3105936563c2ba978ac7f3b))
+
 ## [1.0.1](https://github.com/g4bri3lDev/kaco-modbus/compare/v1.0.0...v1.0.1) (2026-08-23)
 
 
