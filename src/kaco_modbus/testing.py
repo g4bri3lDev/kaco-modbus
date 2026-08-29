@@ -25,12 +25,46 @@ the library depends on its value.
 
 from __future__ import annotations
 
+from .models import Common
+
 # The SunSpec map base address this device uses.
 BASE_ADDRESS = 40000
 
 # The models it advertises, in chain order. 64204 is a KACO vendor block with
 # no public definition.
 MODEL_CHAIN = [1, 103, 113, 120, 121, 122, 123, 126, 129, 130, 132, 135, 136, 160, 64204]
+
+# The end-of-chain marker a SunSpec map terminates with.
+_END_OF_CHAIN = 0xFFFF
+
+
+def _model_address(image: dict[int, int], model_id: int) -> int:
+    """Walk *image*'s model chain and return where *model_id* starts.
+
+    Derived rather than hard-coded: hand-computing SunSpec offsets is the one
+    thing this project has got wrong twice. See CLAUDE.md.
+    """
+    address = BASE_ADDRESS + 2  # past the "SunS" marker
+    while (found := image[address]) != _END_OF_CHAIN:
+        if found == model_id:
+            return address
+        address += 2 + image[address + 1]  # header, then the declared length
+    raise KeyError(f"model {model_id} is not in this image")
+
+
+def with_manufacturer(image: dict[int, int], manufacturer: str) -> dict[int, int]:
+    """Return a copy of *image* reporting a different manufacturer.
+
+    Model 1's ``Mn`` is what says a device is a KACO, so this is how a fixture
+    for a *non*-KACO SunSpec inverter is made: no other vendor's hardware is
+    available to capture a register image from. Every other register, model 1's
+    included, is left exactly as the real inverter returned it.
+    """
+    field = Common.mn
+    start = _model_address(image, 1) + field.address
+    registers = field.encode(manufacturer)
+    return image | dict(zip(range(start, start + field.count), registers, strict=True))
+
 
 BLUEPLANET_86TL3: dict[int, int] = {
     40000: 0x5375,

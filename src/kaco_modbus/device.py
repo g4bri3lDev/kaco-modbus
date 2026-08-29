@@ -16,12 +16,18 @@ from modbus_connection.model.sunspec import SunSpecError, scan
 
 from .const import (
     INVERTER_MODEL_ID,
+    MANUFACTURER,
+    MANUFACTURER_PREFIX,
     READINGS,
     RUNNING_STATES,
     SETTINGS,
     SUNSPEC_BASE_ADDRESSES,
 )
-from .exceptions import ModelMissingError, SunSpecNotFoundError
+from .exceptions import (
+    ModelMissingError,
+    NotAKacoInverterError,
+    SunSpecNotFoundError,
+)
 from .models import (
     Common,
     Conn,
@@ -165,8 +171,16 @@ class KacoInverter:
         if (common := self._bind(Common, 1)) is None:
             raise SunSpecNotFoundError("device has no SunSpec model 1 (common)")
         await common.async_update()
+        # Everything below reads registers on KACO's terms, so establish that
+        # this is a KACO first. A blank Mn is not evidence of one.
+        manufacturer = common.mn or ""
+        if not manufacturer.startswith(MANUFACTURER_PREFIX):
+            raise NotAKacoInverterError(
+                f"device reports its manufacturer as {manufacturer!r}, "
+                f"which is not a {MANUFACTURER} inverter"
+            )
         self.info = DeviceInfo(
-            manufacturer=common.mn or "KACO new energy",
+            manufacturer=manufacturer,
             model=common.md or "unknown",
             serial_number=common.sn or "",
             firmware=common.vr or "",

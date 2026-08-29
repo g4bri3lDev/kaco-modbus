@@ -52,6 +52,14 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
+`async_update()` establishes first that the device really is a KACO, raising
+`NotAKacoInverterError` if not. SunSpec is a shared specification, so another
+vendor's inverter answers the same models at the same addresses — but
+everything this library knows beyond the bare register map is KACO-specific
+(see [`docs/quirks.md`](docs/quirks.md)), and applied elsewhere it would report
+plausible nonsense rather than fail outright. The check is SunSpec model 1's
+manufacturer, matched as a prefix.
+
 ## Command line
 
 ```bash

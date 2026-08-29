@@ -4,6 +4,16 @@ from __future__ import annotations
 
 MANUFACTURER = "KACO new energy"
 
+# What model 1's Mn must start with for this to be a KACO.
+#
+# A prefix rather than the whole string, because only one firmware has ever
+# been captured and it would be pinning a sample of one: an unseen model
+# reporting "KACO new energy GmbH" is still a KACO, and its owner could do
+# nothing about being locked out. Case-sensitive and unstripped, because Mn
+# values are registered with SunSpec — a device that alters the brand's own
+# spelling is a device to be suspicious of, not a KACO with a quirk.
+MANUFACTURER_PREFIX = "KACO"
+
 # Where a SunSpec map may start, in the order worth trying. 40000 is what
 # every KACO tested uses; the other two are the remaining locations the
 # specification allows. Probing a wrong one is cheap — the device answers

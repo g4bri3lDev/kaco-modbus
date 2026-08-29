@@ -13,7 +13,12 @@ from modbus_connection.model.sunspec import SunSpecError, SunSpecMapShiftError
 
 from .const import MANUFACTURER
 from .device import DeviceInfo, KacoInverter, UpdateReport
-from .exceptions import KacoError, ModelMissingError, SunSpecNotFoundError
+from .exceptions import (
+    KacoError,
+    ModelMissingError,
+    NotAKacoInverterError,
+    SunSpecNotFoundError,
+)
 from .models import (
     Conn,
     DERTyp,
@@ -38,6 +43,7 @@ __all__ = [
     "KacoInverter",
     "ModelMissingError",
     "MpptModuleOperatingState",
+    "NotAKacoInverterError",
     "OperatingState",
     "OutPFSetEna",
     "SunSpecError",

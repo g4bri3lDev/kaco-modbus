@@ -20,6 +20,22 @@ class SunSpecNotFoundError(KacoError):
     """
 
 
+class NotAKacoInverterError(KacoError):
+    """The device is a SunSpec inverter, but not a KACO one.
+
+    SunSpec is a shared specification, but each manufacturer layers its own
+    quirks on top — which is why per-vendor libraries exist at all rather than
+    one generic SunSpec one. Everything this library knows beyond the bare
+    register map is KACO-specific: that this firmware parks unmeasured
+    registers at zero after dark rather than at the not-implemented sentinel,
+    that model 113 duplicates 103 and can be skipped, that 64204 is a vendor
+    block. Applied to another vendor's inverter, those assumptions do not hold
+    and the readings would be quietly wrong rather than obviously absent.
+
+    Model 1's ``Mn`` is what tells the two apart.
+    """
+
+
 class ModelMissingError(KacoError):
     """The device does not expose a SunSpec model this operation needs.
 
