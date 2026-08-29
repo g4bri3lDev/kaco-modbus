@@ -31,7 +31,7 @@ from .models import (
     WMaxLimEna,
 )
 
-__version__ = "1.0.1"  # x-release-please-version
+__version__ = "1.1.0"  # x-release-please-version
 
 __all__ = [
     "MANUFACTURER",
