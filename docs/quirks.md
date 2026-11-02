@@ -102,15 +102,18 @@ The inverter answers identically on unit IDs 1, 3, 126 and 247 — it is TCP-nat
 does not decode the field. The default of 1 works. A KACO reached through an
 RS485-to-TCP gateway *will* care, which is why the ID remains configurable.
 
-### Setpoints revert after 300 seconds
+### Setpoints carry a 300 second revert timer
 
 `w_max_lim_pct_rvrt_tms`, `out_pf_set_rvrt_tms` and `v_ar_pct_rvrt_tms` all read `300`.
-A setpoint written without clearing its timer is silently dropped after five minutes.
+Per SunSpec, a setpoint is dropped once that period passes without it being written
+again. **Unverified on hardware**: nobody has watched this firmware revert, accept a
+cleared timer, or restart the period on a write rather than on any read.
 
-Every control setter in this library therefore tries to write the matching revert timer
-to `0` first, which this firmware accepts — so a limit holds indefinitely. If a device
-refuses, the setter does not fail: it records `setpoints_held = False`, and
-`revert_seconds` then tells the caller how long it has to rewrite the value.
+`async_set_power_limit` writes the period the caller passes (`0`, the default, holds the
+limit until it is changed), and `async_resend_power_limit` restarts it. The other setters
+still try to clear their timer. If a device refuses a period, the setter does not fail:
+it records `setpoints_held = False`, and `revert_seconds` then tells the caller how long
+it has to rewrite the value.
 
 ### Frequency must be read unsigned
 

@@ -410,33 +410,53 @@ class KacoInverter:
         value = self.controls.w_max_lim_pct_rvrt_tms
         return int(value) if value else None
 
-    async def _async_hold(self, revert_field: str) -> bool:
-        """Try to clear a setpoint's revert timer so the value sticks.
+    async def _async_hold(self, revert_field: str, seconds: int = 0) -> bool:
+        """Set a setpoint's revert timer; ``0`` clears it so the value sticks.
 
         Returns whether the device allowed it. When it does not, the caller
         must rewrite the setpoint within :attr:`revert_seconds` to keep it.
         """
         controls = self._require_controls()
         try:
-            await controls.write(revert_field, 0)
+            await controls.write(revert_field, seconds)
         except (IllegalDataValueError, *_ABSENT) as err:
-            _LOGGER.debug("Device refuses to clear %s: %s", revert_field, err)
+            _LOGGER.debug("Device refuses to set %s to %s: %s", revert_field, seconds, err)
             return False
         return True
 
-    async def async_set_power_limit(self, percent: float, *, enable: bool = True) -> None:
+    async def async_set_power_limit(
+        self, percent: float, *, enable: bool = True, revert_seconds: int = 0
+    ) -> None:
         """Curtail output to *percent* of nameplate power.
 
-        Writes the setpoint before enabling it, so the inverter never briefly
-        applies a stale limit.
+        *revert_seconds* is how long the device keeps the limit without
+        hearing it again; ``0`` holds it until it is changed. The period is
+        written first and the setpoint before enabling it, so the inverter
+        never briefly applies a stale limit or a stale period.
         """
         if not 0.0 <= percent <= 100.0:
             raise ValueError(f"power limit must be between 0 and 100 %, got {percent}")
         controls = self._require_controls()
+        self.setpoints_held = await self._async_hold("w_max_lim_pct_rvrt_tms", revert_seconds)
         await controls.write("w_max_lim_pct", percent)
-        self.setpoints_held = await self._async_hold("w_max_lim_pct_rvrt_tms")
         await controls.write("w_max_lim_ena", WMaxLimEna.ENABLED if enable else WMaxLimEna.DISABLED)
         await controls.async_update()
+
+    async def async_resend_power_limit(self, revert_seconds: int) -> bool:
+        """Send an active limit again, which restarts its revert period.
+
+        Decided on a fresh read: a limit the device has already dropped is
+        not brought back, and a value another controller wrote is resent as
+        it is. Returns whether a limit was in force and sent.
+        """
+        controls = self._require_controls()
+        await controls.async_update()
+        if controls.w_max_lim_ena is not WMaxLimEna.ENABLED or (
+            (percent := controls.w_max_lim_pct) is None
+        ):
+            return False
+        await self.async_set_power_limit(percent, revert_seconds=revert_seconds)
+        return True
 
     async def async_clear_power_limit(self) -> None:
         """Stop curtailing and return the inverter to full output.
