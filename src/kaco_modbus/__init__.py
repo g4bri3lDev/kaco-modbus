@@ -17,6 +17,7 @@ from .exceptions import (
     KacoError,
     ModelMissingError,
     NotAKacoInverterError,
+    SetpointRejectedError,
     SunSpecNotFoundError,
 )
 from .models import (
@@ -46,6 +47,7 @@ __all__ = [
     "NotAKacoInverterError",
     "OperatingState",
     "OutPFSetEna",
+    "SetpointRejectedError",
     "SunSpecError",
     "SunSpecMapShiftError",
     "SunSpecNotFoundError",

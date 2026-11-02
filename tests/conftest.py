@@ -12,7 +12,7 @@ import pytest
 
 from kaco_modbus import KacoInverter
 from kaco_modbus.models import InverterThreePhase
-from kaco_modbus.testing import BLUEPLANET_86TL3, holding
+from kaco_modbus.testing import BLUEPLANET_86TL3, holding, ignore_writes
 
 if TYPE_CHECKING:
     from modbus_connection.mock import MockModbusUnit
@@ -38,3 +38,9 @@ def ac(inverter: KacoInverter) -> InverterThreePhase:
     """The inverter block — always SunSpec model 103, the only one KACO ships."""
     assert inverter.inverter is not None
     return inverter.inverter
+
+
+@pytest.fixture
+def writes_ignored(inverter: KacoInverter, inverter_unit: MockModbusUnit) -> None:
+    """An inverter with Modbus TCP write access switched off."""
+    ignore_writes(inverter_unit)

@@ -32,6 +32,8 @@ from .models import Common
 if TYPE_CHECKING:
     from collections.abc import Mapping
 
+    from modbus_connection.mock import MockModbusUnit, WriteEvent
+
 # The SunSpec map base address this device uses.
 BASE_ADDRESS = 40000
 
@@ -55,6 +57,19 @@ def _model_address(image: dict[int, int], model_id: int) -> int:
             return address
         address += 2 + image[address + 1]  # header, then the declared length
     raise KeyError(f"model {model_id} is not in this image")
+
+
+def ignore_writes(unit: MockModbusUnit) -> None:
+    """Make *unit* acknowledge every write and drop it.
+
+    What a real inverter does while its Modbus TCP write access is switched off.
+    """
+    registers = dict(unit.holding)
+
+    def restore(event: WriteEvent) -> None:
+        unit.holding[event.address] = registers[event.address]
+
+    unit.on_write(restore)
 
 
 def holding(image: Mapping[int, int]) -> dict[str, dict[int | str, int | bool]]:

@@ -6,8 +6,8 @@ what the library's setters do, while someone watches::
     kaco-limit 192.168.0.155 show
     kaco-limit 192.168.0.155 set 50 --revert 300 --watch 420 --yes-write-to-inverter
 
-Nothing is written without ``--yes-write-to-inverter``. ``--revert`` is
-required wherever a limit is written, because ``0`` holds it indefinitely.
+Nothing is written without ``--yes-write-to-inverter``, and an inverter that
+ignores the writes is reported rather than taken for success.
 
 Needs a backend, so install the ``cli`` extra: ``pip install kaco-modbus[cli]``.
 """
@@ -22,16 +22,14 @@ from typing import TYPE_CHECKING, Any
 
 from modbus_connection import ModbusError, ModbusTcpParams
 
-from .device import KacoInverter
-from .exceptions import KacoError
+from .device import MAX_REVERT_SECONDS, KacoInverter
+from .exceptions import KacoError, SetpointRejectedError
 from .query import _show
 
 if TYPE_CHECKING:
     from modbus_connection import ModbusUnit
 
 WATCH_TICK = 10.0
-# The revert timers are uint16 seconds.
-MAX_REVERT_SECONDS = 0xFFFF
 
 
 def _percent(value: str) -> float:
@@ -43,8 +41,8 @@ def _percent(value: str) -> float:
 
 def _seconds(value: str) -> int:
     seconds = int(value)
-    if not 0 <= seconds <= MAX_REVERT_SECONDS:
-        raise argparse.ArgumentTypeError(f"must be between 0 and {MAX_REVERT_SECONDS}, got {value}")
+    if not 1 <= seconds <= MAX_REVERT_SECONDS:
+        raise argparse.ArgumentTypeError(f"must be between 1 and {MAX_REVERT_SECONDS}, got {value}")
     return seconds
 
 
@@ -95,16 +93,18 @@ async def _run(unit: ModbusUnit, args: Any) -> int:
     if args.action == "show":
         print("[123] controls")
         _show(device.controls)
-    elif args.action == "set":
-        await device.async_set_power_limit(args.percent, revert_seconds=args.revert)
-        print(f"setpoints_held={device.setpoints_held}")
-    elif args.action == "resend":
-        if not await device.async_resend_power_limit(args.revert):
-            print("There is no limit in force to resend.", file=sys.stderr)
-            return 1
-        print(f"setpoints_held={device.setpoints_held}")
     else:
-        await device.async_clear_power_limit()
+        try:
+            if args.action == "set":
+                await device.async_set_power_limit(args.percent, revert_seconds=args.revert)
+            elif args.action == "clear":
+                await device.async_clear_power_limit()
+            elif not await device.async_resend_power_limit(args.revert):
+                print("There is no limit in force to resend.", file=sys.stderr)
+                return 1
+        except SetpointRejectedError as err:
+            print(f"{err} (Modbus TCP Schreibzugriff).", file=sys.stderr)
+            return 1
 
     print(_status_line(device))
     for _ in range(int(args.watch // WATCH_TICK)):
@@ -145,7 +145,7 @@ def build_parser() -> argparse.ArgumentParser:
             type=_seconds,
             required=True,
             metavar="SECONDS",
-            help="revert period the inverter keeps the limit for; 0 holds it indefinitely",
+            help="how long the inverter keeps the limit without hearing it again",
         )
     actions.add_parser("clear", parents=[common], help="disable the limit")
     return parser

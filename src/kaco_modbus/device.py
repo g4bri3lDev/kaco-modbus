@@ -26,6 +26,7 @@ from .const import (
 from .exceptions import (
     ModelMissingError,
     NotAKacoInverterError,
+    SetpointRejectedError,
     SunSpecNotFoundError,
 )
 from .models import (
@@ -66,6 +67,9 @@ _LOGGER = logging.getLogger(__name__)
 # "this inverter does not have it".
 _ABSENT = (IllegalDataAddressError, IllegalFunctionError)
 
+# The revert timers are uint16 seconds.
+MAX_REVERT_SECONDS = 0xFFFF
+
 
 @dataclass
 class UpdateReport:
@@ -84,6 +88,13 @@ class DeviceInfo:
     serial_number: str
     firmware: str
     options: str
+
+
+def _rejected(field: str, written: object, read: object) -> SetpointRejectedError:
+    return SetpointRejectedError(
+        f"inverter did not apply {field}: wrote {written}, reads {read}. "
+        "Check that Modbus TCP write access is enabled on the inverter"
+    )
 
 
 class KacoInverter:
@@ -131,10 +142,6 @@ class KacoInverter:
 
         self._readings: tuple[str, ...] | None = None
         self._settings: tuple[str, ...] = ()
-
-        # Whether this device let us clear a setpoint's revert timer. None
-        # until a setpoint is written. See :meth:`async_set_power_limit`.
-        self.setpoints_held: bool | None = None
 
     # ------------------------------------------------------------------
     # Setup
@@ -398,57 +405,79 @@ class KacoInverter:
 
     @property
     def revert_seconds(self) -> int | None:
-        """How long a power-limit setpoint survives before reverting.
+        """How long a power limit survives without being written again.
 
-        ``None`` once :meth:`async_set_power_limit` has succeeded in clearing
-        the timer, or if the device does not implement one.
+        ``None`` if the device reports no period.
         """
         if self.controls is None:
             return None
-        # A zero timer means "hold indefinitely", which is the same answer as
-        # a device with no timer at all: there is no window to refresh within.
         value = self.controls.w_max_lim_pct_rvrt_tms
         return int(value) if value else None
 
-    async def _async_hold(self, revert_field: str, seconds: int = 0) -> bool:
-        """Set a setpoint's revert timer; ``0`` clears it so the value sticks.
+    async def _async_hold(self, revert_field: str) -> None:
+        """Try to clear a setpoint's revert timer so the value sticks.
 
-        Returns whether the device allowed it. When it does not, the caller
-        must rewrite the setpoint within :attr:`revert_seconds` to keep it.
+        On firmware V5.53 this is refused silently, and for the power limit
+        that is why a period is required instead. See ``docs/quirks.md``.
         """
         controls = self._require_controls()
         try:
-            await controls.write(revert_field, seconds)
+            await controls.write(revert_field, 0)
         except (IllegalDataValueError, *_ABSENT) as err:
-            _LOGGER.debug("Device refuses to set %s to %s: %s", revert_field, seconds, err)
-            return False
-        return True
+            _LOGGER.debug("Device refuses to clear %s: %s", revert_field, err)
+
+    @staticmethod
+    def _check_revert_seconds(revert_seconds: int) -> None:
+        if not 1 <= revert_seconds <= MAX_REVERT_SECONDS:
+            raise ValueError(
+                f"revert period must be between 1 and {MAX_REVERT_SECONDS} s, got {revert_seconds}"
+            )
 
     async def async_set_power_limit(
-        self, percent: float, *, enable: bool = True, revert_seconds: int = 0
+        self, percent: float, *, enable: bool = True, revert_seconds: int
     ) -> None:
         """Curtail output to *percent* of nameplate power.
 
-        *revert_seconds* is how long the device keeps the limit without
-        hearing it again; ``0`` holds it until it is changed. The period is
+        The inverter drops the limit *revert_seconds* after it was last
+        written, so a caller keeping it must call
+        :meth:`async_resend_power_limit` within that time. The period is
         written first and the setpoint before enabling it, so the inverter
         never briefly applies a stale limit or a stale period.
+
+        Raises :class:`SetpointRejectedError` if the inverter acknowledged the
+        writes without applying them. A period it refuses a moment later still
+        gets past this; the next resend writes it again.
         """
         if not 0.0 <= percent <= 100.0:
             raise ValueError(f"power limit must be between 0 and 100 %, got {percent}")
+        self._check_revert_seconds(revert_seconds)
         controls = self._require_controls()
-        self.setpoints_held = await self._async_hold("w_max_lim_pct_rvrt_tms", revert_seconds)
+        state = WMaxLimEna.ENABLED if enable else WMaxLimEna.DISABLED
+        await controls.write("w_max_lim_pct_rvrt_tms", revert_seconds)
         await controls.write("w_max_lim_pct", percent)
-        await controls.write("w_max_lim_ena", WMaxLimEna.ENABLED if enable else WMaxLimEna.DISABLED)
+        await controls.write("w_max_lim_ena", state)
         await controls.async_update()
+
+        if controls.w_max_lim_pct_rvrt_tms != revert_seconds:
+            raise _rejected(
+                "w_max_lim_pct_rvrt_tms", revert_seconds, controls.w_max_lim_pct_rvrt_tms
+            )
+        # Scaling rounds the value; 0.5 covers a scale factor of 0.
+        read = controls.w_max_lim_pct
+        if read is None or abs(read - percent) > 0.5:
+            raise _rejected("w_max_lim_pct", percent, read)
+        if controls.w_max_lim_ena is not state:
+            raise _rejected("w_max_lim_ena", state, controls.w_max_lim_ena)
 
     async def async_resend_power_limit(self, revert_seconds: int) -> bool:
         """Send an active limit again, which restarts its revert period.
 
-        Decided on a fresh read: a limit the device has already dropped is
-        not brought back, and a value another controller wrote is resent as
-        it is. Returns whether a limit was in force and sent.
+        Only a write restarts it, a read does not. Decided on a fresh read: a
+        limit the device has already dropped is not brought back, and a value
+        another controller wrote is resent as it is. Returns whether a limit
+        was in force and sent.
         """
+        self._check_revert_seconds(revert_seconds)
         controls = self._require_controls()
         await controls.async_update()
         if controls.w_max_lim_ena is not WMaxLimEna.ENABLED or (
@@ -467,6 +496,8 @@ class KacoInverter:
         controls = self._require_controls()
         await controls.write("w_max_lim_ena", WMaxLimEna.DISABLED)
         await controls.async_update()
+        if controls.w_max_lim_ena is not WMaxLimEna.DISABLED:
+            raise _rejected("w_max_lim_ena", WMaxLimEna.DISABLED, controls.w_max_lim_ena)
 
     async def async_set_power_factor(self, power_factor: float, *, enable: bool = True) -> None:
         """Hold output at a fixed *power_factor*, the cosine of the phase angle."""

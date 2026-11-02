@@ -119,6 +119,7 @@ async def test_clear(inverter_unit: MockModbusUnit, writes: list[int], controls:
         pytest.param(["set", "50"], id="no-revert"),
         pytest.param(["resend"], id="resend-no-revert"),
         pytest.param(["set", "50", "--revert", "70000"], id="revert-too-long"),
+        pytest.param(["set", "50", "--revert", "0"], id="revert-zero"),
     ],
 )
 def test_refused_arguments(argv: list[str]) -> None:
@@ -157,3 +158,12 @@ async def test_inverter_without_controls(
     mock_modbus_unit.load_raw(holding(without_model(BLUEPLANET_86TL3, 123)))
     assert await run(mock_modbus_unit, "show") == 1
     assert "no SunSpec model 123" in capsys.readouterr().err
+
+
+@pytest.mark.usefixtures("writes_ignored")
+async def test_ignored_write_names_the_setting(
+    inverter_unit: MockModbusUnit, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """Write access off looks like success on the wire, so say what to check."""
+    assert await run(inverter_unit, "set", "50", "--revert", "3600", "--yes-write-to-inverter") == 1
+    assert "Schreibzugriff" in capsys.readouterr().err

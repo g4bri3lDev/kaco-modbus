@@ -119,8 +119,8 @@ kaco-limit 192.168.0.155 clear --yes-write-to-inverter
 ```
 
 Writes to the inverter's grid control (see [Control](#control)), for checking on hardware
-what the setters do. Nothing is sent without `--yes-write-to-inverter`, and `--revert`
-is always required, because `0` holds a limit indefinitely.
+what the setters do. Nothing is sent without `--yes-write-to-inverter`, and an inverter
+that ignores the writes is reported.
 
 ## At night
 
@@ -158,9 +158,13 @@ await inverter.async_clear_power_limit()
 > plant off the grid and may be subject to your interconnection agreement. The volt-var,
 > volt-watt and ride-through curve models are deliberately decoded read-only.
 
-Setpoints carry a revert timeout: per SunSpec, the inverter drops back to its default
-once `revert_seconds` pass without the value being written again. Not yet verified on
-this hardware; see [`docs/quirks.md`](docs/quirks.md).
+The inverter drops a power limit `revert_seconds` after it was last written, and only a
+write restarts that period, so a caller keeping a limit has to keep resending it. A limit
+cannot be held without resending: the firmware refuses a period of `0`.
+
+Writing needs **Modbus TCP Schreibzugriff** (write access) enabled in the inverter's web
+interface. With it off, the inverter acknowledges every write and ignores it, which the
+setters report as `SetpointRejectedError`. See [`docs/quirks.md`](docs/quirks.md).
 
 ## License
 
