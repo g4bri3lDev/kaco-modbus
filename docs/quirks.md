@@ -102,18 +102,37 @@ The inverter answers identically on unit IDs 1, 3, 126 and 247 — it is TCP-nat
 does not decode the field. The default of 1 works. A KACO reached through an
 RS485-to-TCP gateway *will* care, which is why the ID remains configurable.
 
-### Setpoints carry a 300 second revert timer
+### Writes need "Modbus TCP write access" enabled
 
-`w_max_lim_pct_rvrt_tms`, `out_pf_set_rvrt_tms` and `v_ar_pct_rvrt_tms` all read `300`.
-Per SunSpec, a setpoint is dropped once that period passes without it being written
-again. **Unverified on hardware**: nobody has watched this firmware revert, accept a
-cleared timer, or restart the period on a write rather than on any read.
+Write access is a separate switch in the web interface: **Konfiguration → Schnittstellen →
+Netzwerk-Dienste → Modbus TCP Schreibzugriff**. It is off by default. While it is off, the
+inverter acknowledges every write (FC6 and FC16 alike) without an exception and then
+ignores it. Nothing but a read-back shows the write was dropped.
 
-`async_set_power_limit` writes the period the caller passes (`0`, the default, holds the
-limit until it is changed), and `async_resend_power_limit` restarts it. The other setters
-still try to clear their timer. If a device refuses a period, the setter does not fail:
-it records `setpoints_held = False`, and `revert_seconds` then tells the caller how long
-it has to rewrite the value.
+### Power limit behaviour (verified 2026-11-02, V5.53)
+
+Measured with `kaco-limit` against the 8.6 TL3 INT, at 120–190 W of production:
+
+- **Applies within 10 s.** A 1 % limit (86 W) brought output from 190 W to 60 W; the
+  operating state reads `THROTTLED` while it holds.
+- **Reverts on time, regardless of reads.** With `w_max_lim_pct_rvrt_tms` at 60 the limit
+  lifted 60 s after the write, although the inverter was being read every 10 s. Reads do
+  not restart the period.
+- **A write restarts it.** With a 30 s period, two resends 20 s apart held the limit until
+  30–40 s after the last one.
+- **On revert** the inverter sets `w_max_lim_ena` to disabled and leaves `w_max_lim_pct`
+  and the period as they were.
+- **0 % stops output, then the inverter restarts.** Output went to 0 W while `conn` stayed
+  `CONNECT`; after the revert it spent about 60 s in `STARTING` before feeding in again.
+- **A period of 0 is refused, silently.** The register reads `0` right after the write,
+  then the previous period comes back within 10 s and the limit lifts on that schedule.
+  A limit cannot be held indefinitely: something has to resend it.
+
+The factory value of all three revert timers is `300`.
+
+**Still unknown:** whether any model 123 field is stored in flash. KACO's application note
+says some SunSpec settings are, and must not be written periodically; the list is in
+`SunSpec-Information-Model-Reference-Kaco.xlsx`, which is not public.
 
 ### Frequency must be read unsigned
 
