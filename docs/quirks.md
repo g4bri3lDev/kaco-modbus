@@ -130,9 +130,17 @@ Measured with `kaco-limit` against the 8.6 TL3 INT, at 120–190 W of production
 
 The factory value of all three revert timers is `300`.
 
-**Still unknown:** whether any model 123 field is stored in flash. KACO's application note
-says some SunSpec settings are, and must not be written periodically; the list is in
-`SunSpec-Information-Model-Reference-Kaco.xlsx`, which is not public.
+### Which registers may be written periodically
+
+KACO's `SunSpec_Information_Model_Reference.xlsx`, in the "Specification SunSpec-Modbus-Interface
+blueplanet 3.0 - 10.0 V5.53" package from the download archive, colours each register. Orange
+means "implemented, but may not be written periodically". Green means implemented, with no
+such restriction.
+
+Orange covers the writable fields of the curve models 126, 129, 130, 135 and 136. Every
+implemented field of model 123 is green, including `WMaxLimPct`, `WMaxLimPct_RvrtTms` and
+`WMaxLim_Ena`, so resending a power limit is allowed. This is one firmware's table: check the
+matching package before relying on it for another model or version.
 
 ### Frequency must be read unsigned
 
