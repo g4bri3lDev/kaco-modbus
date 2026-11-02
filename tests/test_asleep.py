@@ -14,7 +14,7 @@ from typing import TYPE_CHECKING
 import pytest
 
 from kaco_modbus import KacoInverter, OperatingState
-from kaco_modbus.testing import BLUEPLANET_86TL3_ASLEEP
+from kaco_modbus.testing import BLUEPLANET_86TL3_ASLEEP, holding
 
 if TYPE_CHECKING:
     from modbus_connection.mock import MockModbusUnit
@@ -23,7 +23,7 @@ if TYPE_CHECKING:
 @pytest.fixture
 async def asleep(mock_modbus_unit: MockModbusUnit) -> KacoInverter:
     """The inverter as captured after dark."""
-    mock_modbus_unit.load_raw({"holding": BLUEPLANET_86TL3_ASLEEP})
+    mock_modbus_unit.load_raw(holding(BLUEPLANET_86TL3_ASLEEP))
     device = KacoInverter(mock_modbus_unit)
     await device.async_update()
     return device

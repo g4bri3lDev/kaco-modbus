@@ -8,11 +8,11 @@ discovers the same models it would on the real hardware.
 Load it into the mock backend to exercise the library without a device::
 
     from modbus_connection.mock import MockModbusConnection
-    from kaco_modbus.testing import BLUEPLANET_86TL3
+    from kaco_modbus.testing import BLUEPLANET_86TL3, holding
 
     connection = MockModbusConnection()
     unit = connection.for_unit(1)
-    unit.load_raw({"holding": BLUEPLANET_86TL3})
+    unit.load_raw(holding(BLUEPLANET_86TL3))
 
 The values are a single instant of a sunny afternoon, so the inverter is
 producing and every "not implemented" sentinel is the one this firmware
@@ -25,7 +25,12 @@ the library depends on its value.
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from .models import Common
+
+if TYPE_CHECKING:
+    from collections.abc import Mapping
 
 # The SunSpec map base address this device uses.
 BASE_ADDRESS = 40000
@@ -50,6 +55,11 @@ def _model_address(image: dict[int, int], model_id: int) -> int:
             return address
         address += 2 + image[address + 1]  # header, then the declared length
     raise KeyError(f"model {model_id} is not in this image")
+
+
+def holding(image: Mapping[int, int]) -> dict[str, dict[int | str, int | bool]]:
+    """Wrap *image* as the holding-register space ``MockModbusUnit.load_raw`` takes."""
+    return {"holding": {address: value for address, value in image.items()}}
 
 
 def without_model(image: dict[int, int], model_id: int) -> dict[int, int]:

@@ -19,6 +19,7 @@ from kaco_modbus.testing import (
     BASE_ADDRESS,
     BLUEPLANET_86TL3,
     MODEL_CHAIN,
+    holding,
     with_manufacturer,
 )
 
@@ -73,7 +74,7 @@ async def test_binds_curves_without_polling_them(inverter: KacoInverter) -> None
 async def test_probes_base_addresses_in_order(inverter_unit: MockModbusUnit) -> None:
     """A device whose map is not at 40000 is still found."""
     shifted = {address - BASE_ADDRESS: value for address, value in BLUEPLANET_86TL3.items()}
-    inverter_unit.load_raw({"holding": shifted})
+    inverter_unit.load_raw(holding(shifted))
     # Reading 40000 must now fail the way a real device fails an unmapped read.
     for address in range(BASE_ADDRESS, BASE_ADDRESS + 2):
         inverter_unit.fail_read(address, IllegalDataAddressError())
@@ -93,7 +94,7 @@ async def test_explicit_base_address_skips_probing(inverter_unit: MockModbusUnit
 
 async def test_no_marker_anywhere(mock_modbus_unit: MockModbusUnit) -> None:
     """A device that answers but is not SunSpec is reported as such."""
-    mock_modbus_unit.load_raw({"holding": dict.fromkeys(range(40000, 40010), 0)})
+    mock_modbus_unit.load_raw(holding(dict.fromkeys(range(40000, 40010), 0)))
     with pytest.raises(SunSpecNotFoundError, match="no SunSpec marker"):
         await KacoInverter(mock_modbus_unit).async_update()
 
@@ -157,7 +158,7 @@ async def test_a_device_that_is_not_a_kaco_is_rejected(
     anything.
     """
     image = with_manufacturer(BLUEPLANET_86TL3, manufacturer)
-    mock_modbus_unit.load_raw({"holding": image})
+    mock_modbus_unit.load_raw(holding(image))
 
     with pytest.raises(NotAKacoInverterError) as caught:
         await KacoInverter(mock_modbus_unit).async_update()
@@ -187,7 +188,7 @@ async def test_a_kaco_under_any_spelling_is_accepted(
     alters it — case, leading whitespace — is not.
     """
     image = with_manufacturer(BLUEPLANET_86TL3, manufacturer)
-    mock_modbus_unit.load_raw({"holding": image})
+    mock_modbus_unit.load_raw(holding(image))
 
     device = KacoInverter(mock_modbus_unit)
     await device.async_update()
@@ -208,7 +209,7 @@ async def test_device_without_an_inverter_model(mock_modbus_unit: MockModbusUnit
     end = BASE_ADDRESS + 2 + 2 + 66
     common_only[end] = 0xFFFF
     common_only[end + 1] = 0
-    mock_modbus_unit.load_raw({"holding": common_only})
+    mock_modbus_unit.load_raw(holding(common_only))
 
     with pytest.raises(ModelMissingError, match="no SunSpec inverter model"):
         await KacoInverter(mock_modbus_unit).async_update()

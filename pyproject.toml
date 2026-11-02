@@ -26,7 +26,7 @@ dynamic = ["version"]
 # choice on every consumer and defeat the point of the abstraction.
 #
 # The floor stays as low as the code actually needs. Home Assistant pins
-# modbus-connection exactly (==4.9.0 as of core dev) and installs every
+# modbus-connection exactly (==4.12.7 as of core dev) and installs every
 # integration into one environment, so a floor above core's pin would make
 # the Home Assistant integration uninstallable. Raise it only for API this
 # library genuinely uses.

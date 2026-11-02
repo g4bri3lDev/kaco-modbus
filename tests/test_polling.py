@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING
 from modbus_connection import IllegalDataAddressError, ModbusTimeoutError
 
 from kaco_modbus import KacoInverter
-from kaco_modbus.testing import BLUEPLANET_86TL3, without_model
+from kaco_modbus.testing import BLUEPLANET_86TL3, holding, without_model
 
 if TYPE_CHECKING:
     from modbus_connection.mock import MockModbusUnit
@@ -56,7 +56,7 @@ async def test_readings_include_controls(inverter: KacoInverter) -> None:
 
 
 async def test_without_model_drops_controls(mock_modbus_unit: MockModbusUnit) -> None:
-    mock_modbus_unit.load_raw({"holding": without_model(BLUEPLANET_86TL3, 123)})
+    mock_modbus_unit.load_raw(holding(without_model(BLUEPLANET_86TL3, 123)))
     device = KacoInverter(mock_modbus_unit)
     report = await device.async_update()
 

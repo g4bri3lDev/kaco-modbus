@@ -12,7 +12,7 @@ import pytest
 
 from kaco_modbus import KacoInverter
 from kaco_modbus.models import InverterThreePhase
-from kaco_modbus.testing import BLUEPLANET_86TL3
+from kaco_modbus.testing import BLUEPLANET_86TL3, holding
 
 if TYPE_CHECKING:
     from modbus_connection.mock import MockModbusUnit
@@ -21,7 +21,7 @@ if TYPE_CHECKING:
 @pytest.fixture
 def inverter_unit(mock_modbus_unit: MockModbusUnit) -> MockModbusUnit:
     """A mock unit loaded with the real 8.6 TL3 register image."""
-    mock_modbus_unit.load_raw({"holding": BLUEPLANET_86TL3})
+    mock_modbus_unit.load_raw(holding(BLUEPLANET_86TL3))
     return mock_modbus_unit
 
 

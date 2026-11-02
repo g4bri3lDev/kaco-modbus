@@ -15,7 +15,7 @@ from kaco_modbus import (
     VArPctMod,
     WMaxLimEna,
 )
-from kaco_modbus.testing import BASE_ADDRESS, BLUEPLANET_86TL3, without_model
+from kaco_modbus.testing import BLUEPLANET_86TL3, holding, without_model
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -180,13 +180,7 @@ async def test_control_on_an_inverter_without_model_123(
     mock_modbus_unit: MockModbusUnit,
 ) -> None:
     """Explain the absence rather than failing with an AttributeError."""
-    without_controls = dict(BLUEPLANET_86TL3)
-    controls_header = BASE_ADDRESS + 2 + 2 + 66 + 2 + 50 + 2 + 60 + 2 + 26 + 2 + 30 + 2 + 44
-    assert without_controls[controls_header] == 123
-    # End the chain where model 123 would start.
-    without_controls[controls_header] = 0xFFFF
-    without_controls[controls_header + 1] = 0
-    mock_modbus_unit.load_raw({"holding": without_controls})
+    mock_modbus_unit.load_raw(holding(without_model(BLUEPLANET_86TL3, 123)))
 
     device = KacoInverter(mock_modbus_unit)
     await device.async_update()
@@ -255,7 +249,7 @@ class TestCallerRevertPeriod:
         assert writes == []
 
     async def test_resend_without_controls(self, mock_modbus_unit: MockModbusUnit) -> None:
-        mock_modbus_unit.load_raw({"holding": without_model(BLUEPLANET_86TL3, 123)})
+        mock_modbus_unit.load_raw(holding(without_model(BLUEPLANET_86TL3, 123)))
         device = KacoInverter(mock_modbus_unit)
         await device.async_update()
 
