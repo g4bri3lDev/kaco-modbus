@@ -43,6 +43,7 @@ Issues = "https://github.com/g4bri3lDev/kaco-modbus/issues"
 [project.scripts]
 kaco-status = "kaco_modbus.status:main"
 kaco-query = "kaco_modbus.query:main"
+kaco-limit = "kaco_modbus.limit:main"
 
 [tool.hatch.version]
 path = "src/kaco_modbus/__init__.py"
