@@ -52,6 +52,22 @@ def _model_address(image: dict[int, int], model_id: int) -> int:
     raise KeyError(f"model {model_id} is not in this image")
 
 
+def without_model(image: dict[int, int], model_id: int) -> dict[int, int]:
+    """Return a copy of *image* whose chain does not advertise *model_id*.
+
+    How a fixture for an inverter lacking a model is made. The model's header
+    and body are cut out and everything after it moves up, so the chain stays
+    contiguous and still ends in the end marker.
+    """
+    start = _model_address(image, model_id)
+    span = 2 + image[start + 1]
+    return {
+        (address - span if address >= start + span else address): value
+        for address, value in image.items()
+        if not start <= address < start + span
+    }
+
+
 def with_manufacturer(image: dict[int, int], manufacturer: str) -> dict[int, int]:
     """Return a copy of *image* reporting a different manufacturer.
 
