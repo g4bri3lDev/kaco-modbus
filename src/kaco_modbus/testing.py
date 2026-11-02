@@ -8,11 +8,11 @@ discovers the same models it would on the real hardware.
 Load it into the mock backend to exercise the library without a device::
 
     from modbus_connection.mock import MockModbusConnection
-    from kaco_modbus.testing import BLUEPLANET_86TL3
+    from kaco_modbus.testing import BLUEPLANET_86TL3, holding
 
     connection = MockModbusConnection()
     unit = connection.for_unit(1)
-    unit.load_raw({"holding": BLUEPLANET_86TL3})
+    unit.load_raw(holding(BLUEPLANET_86TL3))
 
 The values are a single instant of a sunny afternoon, so the inverter is
 producing and every "not implemented" sentinel is the one this firmware
@@ -25,7 +25,14 @@ the library depends on its value.
 
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from .models import Common
+
+if TYPE_CHECKING:
+    from collections.abc import Mapping
+
+    from modbus_connection.mock import MockModbusUnit, WriteEvent
 
 # The SunSpec map base address this device uses.
 BASE_ADDRESS = 40000
@@ -50,6 +57,40 @@ def _model_address(image: dict[int, int], model_id: int) -> int:
             return address
         address += 2 + image[address + 1]  # header, then the declared length
     raise KeyError(f"model {model_id} is not in this image")
+
+
+def ignore_writes(unit: MockModbusUnit) -> None:
+    """Make *unit* acknowledge every write and drop it.
+
+    What a real inverter does while its Modbus TCP write access is switched off.
+    """
+    registers = dict(unit.holding)
+
+    def restore(event: WriteEvent) -> None:
+        unit.holding[event.address] = registers[event.address]
+
+    unit.on_write(restore)
+
+
+def holding(image: Mapping[int, int]) -> dict[str, dict[int | str, int | bool]]:
+    """Wrap *image* as the holding-register space ``MockModbusUnit.load_raw`` takes."""
+    return {"holding": {address: value for address, value in image.items()}}
+
+
+def without_model(image: dict[int, int], model_id: int) -> dict[int, int]:
+    """Return a copy of *image* whose chain does not advertise *model_id*.
+
+    How a fixture for an inverter lacking a model is made. The model's header
+    and body are cut out and everything after it moves up, so the chain stays
+    contiguous and still ends in the end marker.
+    """
+    start = _model_address(image, model_id)
+    span = 2 + image[start + 1]
+    return {
+        (address - span if address >= start + span else address): value
+        for address, value in image.items()
+        if not start <= address < start + span
+    }
 
 
 def with_manufacturer(image: dict[int, int], manufacturer: str) -> dict[int, int]:

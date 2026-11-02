@@ -109,6 +109,19 @@ kaco-query 192.168.0.155 --raw     # plus an undecoded register dump
 Prints the discovered SunSpec model chain and every decoded field under its real
 SunSpec name, with `—` for the ones this firmware does not implement.
 
+### `kaco-limit` — supervised power limit tests
+
+```bash
+kaco-limit 192.168.0.155 show
+kaco-limit 192.168.0.155 set 50 --revert 300 --watch 420 --yes-write-to-inverter
+kaco-limit 192.168.0.155 resend --revert 300 --yes-write-to-inverter
+kaco-limit 192.168.0.155 clear --yes-write-to-inverter
+```
+
+Writes to the inverter's grid control (see [Control](#control)), for checking on hardware
+what the setters do. Nothing is sent without `--yes-write-to-inverter`, and an inverter
+that ignores the writes is reported.
+
 ## At night
 
 A KACO stays on Modbus after dark rather than going silent, but parks the readings it
@@ -135,7 +148,8 @@ See [`docs/quirks.md`](docs/quirks.md).
 Writes are limited to SunSpec model 123 (immediate controls):
 
 ```python
-await inverter.async_set_power_limit(50.0)  # curtail to 50 %
+await inverter.async_set_power_limit(50.0, revert_seconds=3600)  # curtail to 50 % for an hour
+await inverter.async_resend_power_limit(3600)  # still in force? send it again
 await inverter.async_clear_power_limit()
 ```
 
@@ -144,9 +158,13 @@ await inverter.async_clear_power_limit()
 > plant off the grid and may be subject to your interconnection agreement. The volt-var,
 > volt-watt and ride-through curve models are deliberately decoded read-only.
 
-Setpoints on this hardware carry a revert timeout — the inverter drops back to its
-default after `revert_seconds` unless the value is written again. See
-[`docs/quirks.md`](docs/quirks.md).
+The inverter drops a power limit `revert_seconds` after it was last written, and only a
+write restarts that period, so a caller keeping a limit has to keep resending it. A limit
+cannot be held without resending: the firmware refuses a period of `0`.
+
+Writing needs **Modbus TCP Schreibzugriff** (write access) enabled in the inverter's web
+interface. With it off, the inverter acknowledges every write and ignores it, which the
+setters report as `SetpointRejectedError`. See [`docs/quirks.md`](docs/quirks.md).
 
 ## License
 

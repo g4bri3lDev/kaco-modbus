@@ -37,8 +37,10 @@ SUNSPEC_BASE_ADDRESSES = (40000, 0, 50000)
 INVERTER_MODEL_ID = 103
 
 # Components polled every cycle, and those polled rarely. Order is poll order.
-READINGS = ("inverter", "mppt", "status")
-SETTINGS = ("nameplate", "settings", "controls", "volt_var")
+# Controls are read with the readings: another controller can change a limit
+# at any time, and a caller holding one needs to see that within a poll.
+READINGS = ("inverter", "mppt", "status", "controls")
+SETTINGS = ("nameplate", "settings", "volt_var")
 
 # The vendor block this firmware advertises. There is no public definition for
 # it, so it is reported as raw registers and never decoded.

@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING
 from modbus_connection import IllegalDataAddressError, ModbusTimeoutError
 
 from kaco_modbus import KacoInverter
+from kaco_modbus.testing import BLUEPLANET_86TL3, holding, without_model
 
 if TYPE_CHECKING:
     from modbus_connection.mock import MockModbusUnit
@@ -29,9 +30,9 @@ async def test_a_clean_poll_reports_everything(inverter: KacoInverter) -> None:
         "inverter",
         "mppt",
         "status",
+        "controls",
         "nameplate",
         "settings",
-        "controls",
         "volt_var",
     ]
     assert report.failed == {}
@@ -40,10 +41,29 @@ async def test_a_clean_poll_reports_everything(inverter: KacoInverter) -> None:
 async def test_readings_and_settings_poll_separately(inverter: KacoInverter) -> None:
     """They run on different intervals, so each must stand alone."""
     readings = await inverter.async_update_readings()
-    assert readings.updated == ["inverter", "mppt", "status"]
+    assert readings.updated == ["inverter", "mppt", "status", "controls"]
 
     settings = await inverter.async_update_settings()
-    assert settings.updated == ["nameplate", "settings", "controls", "volt_var"]
+    assert settings.updated == ["nameplate", "settings", "volt_var"]
+
+
+async def test_readings_include_controls(inverter: KacoInverter) -> None:
+    """A limit can change outside Home Assistant, so it is read every cycle."""
+    report = await inverter.async_update_readings()
+    assert "controls" in report.updated
+    assert inverter.controls is not None
+    assert inverter.controls.w_max_lim_pct == 100.0
+
+
+async def test_without_model_drops_controls(mock_modbus_unit: MockModbusUnit) -> None:
+    mock_modbus_unit.load_raw(holding(without_model(BLUEPLANET_86TL3, 123)))
+    device = KacoInverter(mock_modbus_unit)
+    report = await device.async_update()
+
+    assert device.controls is None
+    assert "controls" not in report.updated
+    assert device.status is not None
+    assert device.volt_var is not None
 
 
 async def test_one_failing_block_does_not_take_down_the_rest(
@@ -91,7 +111,7 @@ async def test_a_dead_device_reports_everything_failed(
     report = await device.async_update_readings()
 
     assert report.updated == []
-    assert set(report.failed) == {"inverter", "mppt", "status"}
+    assert set(report.failed) == {"inverter", "mppt", "status", "controls"}
 
 
 async def test_recovers_without_re_running_setup(inverter_unit: MockModbusUnit) -> None:
@@ -106,7 +126,7 @@ async def test_recovers_without_re_running_setup(inverter_unit: MockModbusUnit) 
     inverter_unit.fail_requests(None)
     report = await device.async_update_readings()
 
-    assert report.updated == ["inverter", "mppt", "status"]
+    assert report.updated == ["inverter", "mppt", "status", "controls"]
     assert device.models is models_before
 
 

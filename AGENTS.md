@@ -90,11 +90,11 @@ Writes are confined to SunSpec model 123 (immediate controls). The volt-var,
 volt-watt and ride-through curve models are decoded read-only on purpose:
 changing them can breach an interconnection agreement.
 
-Setpoints on this hardware carry a revert timer — the inverter drops back to
-default after 300 s unless the value is rewritten. Each setter tries to clear
-that timer and reports through `setpoints_held` whether the device allowed it.
-**This has never been verified against real hardware**; it needs a deliberate
-curtailment in daylight.
+The inverter drops a power limit `revert_seconds` after it was last written, and only a
+write restarts that. The firmware silently refuses a period of `0`, so the period is
+required and a limit has to be resent to last. With write access off, writes are
+acknowledged and ignored, so the power limit setters read back and raise
+`SetpointRejectedError`. Measured on hardware; see `docs/quirks.md`.
 
 Never retry a write. `modbus-connection` performs no automatic retries by
 design; retrying a read is fine, but a retried write must first read back to

@@ -79,7 +79,7 @@ async def _run(host: str, port: int, unit_id: int, raw: bool) -> int:
 
         if device.controls is not None:
             held = (
-                "held indefinitely"
+                "no revert period reported"
                 if device.revert_seconds is None
                 else (f"reverts after {device.revert_seconds} s unless rewritten")
             )

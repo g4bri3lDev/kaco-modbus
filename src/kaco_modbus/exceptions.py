@@ -42,3 +42,11 @@ class ModelMissingError(KacoError):
     Raised when asking for a capability the device never advertised, such as
     curtailment on an inverter without model 123.
     """
+
+
+class SetpointRejectedError(KacoError):
+    """The inverter acknowledged a write and then did not apply it.
+
+    With Modbus TCP write access switched off, it answers every write as if it
+    had worked and changes nothing, so only a read-back shows this.
+    """
